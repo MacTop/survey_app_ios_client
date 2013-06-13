@@ -1,9 +1,9 @@
-describe "Application 'survey_app_ios_client'" do
+describe "Delegate" do
   before do
-    @app = UIApplication.sharedApplication
+    @delegate = TestDelegate.new
   end
 
-  it "has one window" do
-    @app.windows.size.should == 1
+  it "open Questions Screen" do
+    view('Survey').should.not.be.nil
   end
 end
