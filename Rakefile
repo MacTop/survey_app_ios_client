@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
+require 'rubygems'
 require 'bundler'
 
 if ARGV.join(' ') =~ /spec/
