@@ -19,7 +19,7 @@ doc/
 
 
 #build files
-build/**
+build
 
 #repl_history
 .repl_history
