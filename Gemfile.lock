@@ -2,9 +2,13 @@ GEM
   remote: https://rubygems.org/
   specs:
     ProMotion (0.7.5)
+    motion-stump (0.2.1)
+    teacup (2.0.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   ProMotion (~> 0.7.5)
+  motion-stump
+  teacup
