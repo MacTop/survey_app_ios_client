@@ -1,0 +1,10 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ProMotion (0.7.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ProMotion (~> 0.7.5)
