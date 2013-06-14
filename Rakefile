@@ -2,6 +2,7 @@
 $:.unshift("/Library/RubyMotion/lib")
 require 'motion/project/template/ios'
 require 'rubygems'
+require 'sugarcube-gestures'
 require 'bundler'
 
 if ARGV.join(' ') =~ /spec/
