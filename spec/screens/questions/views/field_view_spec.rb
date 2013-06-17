@@ -9,7 +9,7 @@ describe "FieldView" do
   end
 
   it "should set the question statement in the view" do
-    field_views = @questions_screen.view.subviews.collect{|subview| subview if subview.class == FieldView}
+    field_views = @questions_screen.view.subviews.select{|subview| subview if subview.class == FieldView}
     question_statement_label = field_views.last.viewWithTag(100)
     question_statement_label.text.should == @args[:content]
   end

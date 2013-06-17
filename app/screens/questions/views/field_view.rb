@@ -27,10 +27,14 @@ class FieldView < UIView
   def handle_SingleLineQuestion
     origin = get_origin_y self
     text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, 30))
-    text_field.borderStyle = UITextBorderStyleLine
+   # text_field.borderStyle = UITextBorderStyleLine
+   # text_field.layer.borderWidth = 2
+   # text_field.layer.borderColor = UIColor.grayColor.CGColor
     text_field.delegate = QuestionScreen.this_controller
     text_field.backgroundColor = UIColor.whiteColor
     text_field.setTag Tags::FieldViewTextField
+    text_field.contentVerticalAlignment = 0
+    text_field.setBorderStyle(UITextBorderStyleRoundedRect)
     self.addSubview(text_field)
   end
 

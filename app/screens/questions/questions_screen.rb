@@ -1,13 +1,15 @@
 class QuestionScreen < PM::Screen
   include Helpers
   include Constants
+
+  SwipeToChange = "Swipe to turn pages"
   
   def on_load
     @@this_controller = self
-    add_header_view
     set_attributes self.view, {
       backgroundColor: ControlVariables::ScreenColor
     }
+    self.view.addSubview(HeaderView.new({:title => "New Response"}))
     self.view.accessibilityLabel = "question_screen"
     @questions = []
     @current_page = 0
@@ -17,6 +19,7 @@ class QuestionScreen < PM::Screen
       @questions << FieldView.new(question)
     end
     self.view.addSubview(@questions[0])
+    add_swipe_view
     swipe_left_handler
     swipe_right_handler
   end
@@ -29,7 +32,27 @@ class QuestionScreen < PM::Screen
      self.navigationController.setNavigationBarHidden(false, animated: true)
   end
   
+  def textFieldDidBeginEditing(textField)
+  end
+
+  def textFieldDidEndEditing(textField)
+  end
+
+  def add_swipe_view
+    @page_label_view = UILabel.alloc.initWithFrame(CGRectMake(0, self.view.frame.size.height-ControlVariables::SwipeBannerHeight, self.view.frame.size.width, ControlVariables::SwipeBannerHeight))
+    @page_label_view.textAlignment = NSTextAlignmentCenter
+    @page_label_view.textColor = UIColor.whiteColor
+    @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
+    update_page_number
+    self.view.addSubview(@page_label_view)
+  end
+
+  def update_page_number
+    @page_label_view.text = "<<  #{SwipeToChange} - #{@current_page+1 }/#{@questions.count}  >>"
+  end
+
   def addQuestionView(offset)
+    update_page_number
     UIView.animateWithDuration(0.5 ,animations: self.first_animation(offset) , completion: self.get_completion)
     next_view = @questions[@current_page]
     next_view_frame = next_view.frame
@@ -62,10 +85,11 @@ class QuestionScreen < PM::Screen
   end
 
   def swipe_left_handler
+    
     self.view.on_swipe(direction: :left, fingers: 1) do
       if @current_page < @questions.count-1
         @current_page += 1
-        self.addQuestionView(320)
+        self.addQuestionView(ControlVariables::ScreenWidth)
       end
     end
   end
@@ -74,25 +98,13 @@ class QuestionScreen < PM::Screen
     self.view.on_swipe(direction: :right, fingers: 1) do
       unless @current_page.zero?
         @current_page -= 1
-        self.addQuestionView(-320)
+        self.addQuestionView(-ControlVariables::ScreenWidth)
       end
     end
   end
   
-  def textFieldDidBeginEditing(textField)
-  end
-
-  def textFieldDidEndEditing(textField)
-  end
-
-
   def self.this_controller
     @@this_controller
   end
 
-  def add_header_view
-    header_view = UIView.alloc.initWithFrame(CGRectMake(0,0,self.view.frame.size.width,40))
-    header_view.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
-    self.view.addSubview(header_view)
-  end
 end

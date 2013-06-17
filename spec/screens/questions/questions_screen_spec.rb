@@ -1,5 +1,4 @@
 describe "QuestionScreen" do
-  tests QuestionScreen
 
   before do
     @delegate = TestDelegate.new
@@ -29,4 +28,9 @@ describe "QuestionScreen" do
     field_views.last.viewWithTag(100).text.should == @second_arg[:content]
   end
 =end
+
+  it "should include header view" do
+    sub_views = @questions_screen.view.subviews.collect{|sub_view| sub_view.class.to_s}
+    sub_views.should.include "HeaderView"
+  end
 end
