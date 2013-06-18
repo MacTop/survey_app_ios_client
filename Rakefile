@@ -16,7 +16,7 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'survey_app'
   app.identifier = 'com.multunus.surveyapp'
-
+  app.icons = ['Icon-Small-50.png', 'Icon-Small@2x.png', 'iTunesArtwork.png', 'Icon-72.png', 'Icon-Small-50@2x.png', 'Icon.png', 'iTunesArtwork@2x.png', 'Icon-72@2x.png', 'Icon-Small.png', 'Icon@2x.png']
   app.device_family = :iphone
   app.interface_orientations = [:portrait]
   
