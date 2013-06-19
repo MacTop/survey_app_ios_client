@@ -1,6 +1,6 @@
 class HeaderView < UIView
   include Helpers
-  include Constants
+#  include Constants
 
   def initialize(args = {})
     self.initWithFrame CGRectMake(0, 0, ControlVariables::ScreenWidth, ControlVariables::HeaderHeight)

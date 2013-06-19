@@ -23,3 +23,9 @@ build
 
 #repl_history
 .repl_history
+
+#mac files
+.DS_Store
+
+#I18n generated files
+en.lproj

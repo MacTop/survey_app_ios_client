@@ -1,7 +1,7 @@
 describe "QuestionScreen" do
 
   before do
-    @delegate = TestDelegate.new
+    # @delegate = TestDelegate.new
     @first_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "first_question"}
     @second_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "second_question"}
     Question.should.receive(:get_survey).and_return([@first_arg, @second_arg])

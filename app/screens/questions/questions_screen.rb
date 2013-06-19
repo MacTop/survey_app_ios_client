@@ -1,16 +1,16 @@
 class QuestionScreen < PM::Screen
   include Helpers
-  include Constants
+#  include Constants
 
-  SwipeToChange = "Swipe to turn pages"
+  stylesheet :main
+
+  SwipeToChange = I18n.t('question_screen.swipe_to_change')
   
   def on_load
     @@this_controller = self
-    set_attributes self.view, {
-      backgroundColor: ControlVariables::ScreenColor
-    }
-    self.view.addSubview(HeaderView.new({:title => "New Response"}))
-    self.view.accessibilityLabel = "question_screen"
+    set_attributes self.view, stylename: :base_theme
+    self.view.addSubview(HeaderView.new({:title => I18n.t('question_screen.title')}))
+    self.view.accessibilityLabel = I18n.t('question_screen.accessibility_label')
     @questions = []
     @current_page = 0
     Question.get_survey.each_with_index do |question, index|

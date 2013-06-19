@@ -1,9 +1,12 @@
-module Constants
   class Tags
     FieldView                        = 50
     FieldViewLabel                   = 100
     FieldViewTextField               = 200
     HeaderView                       = 250
+    SurveyNameLabel                  = 300
+    SurveyDescriptionLabel           = 350
+    SurveyExpiryDateLabel            = 400
+    ResponseNavigationLabel          = 450
   end
   
   class ControlVariables
@@ -16,4 +19,3 @@ module Constants
     LogoWidth                        = 35
     SwipeBannerHeight                = 40
   end
-end
