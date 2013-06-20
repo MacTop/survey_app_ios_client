@@ -1,10 +1,13 @@
-module Constants
   class Tags
     FieldView                        = 50
     FieldViewLabel                   = 100
     FieldViewTextField               = 200
     HeaderView                       = 250
-    SubmitButtonView                 = 300
+    SubmitButtonView                 = 310
+    SurveyNameLabel                  = 300
+    SurveyDescriptionLabel           = 350
+    SurveyExpiryDateLabel            = 400
+    ResponseNavigationLabel          = 450
   end
   
   class ControlVariables
@@ -19,4 +22,3 @@ module Constants
     SubmitButtonWidth                = 220
     SubmitButtonHeight               = 40
   end
-end

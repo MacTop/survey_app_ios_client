@@ -1,7 +1,7 @@
 class AppDelegate < PM::Delegate
   def on_load(app, options)
     initialize_nano_store
-    open QuestionScreen.new(nav_bar: true)
+    open SurveyListScreen.new(nav_bar: true)
   end
 
   def initialize_nano_store

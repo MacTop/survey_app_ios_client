@@ -1,16 +1,15 @@
 class QuestionScreen < PM::Screen
   attr_accessor :survey_id
   include Helpers
-  include Constants
   stylesheet :main
 
-  SwipeToChange = "Swipe to turn pages"
+  SwipeToChange = I18n.t('question_screen.swipe_to_change')
   
   def on_load
     @@this_controller = self
     set_attributes self.view, stylename: :base_theme
-    self.view.addSubview(HeaderView.new({:title => "New Response"}))
-    self.view.accessibilityLabel = "question_screen"
+    self.view.addSubview(HeaderView.new({:title => I18n.t('question_screen.title')}))
+    self.view.accessibilityLabel = I18n.t('question_screen.accessibility_label')
     @questions = []
     @current_page = 0
     populate_questions

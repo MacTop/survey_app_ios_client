@@ -1,0 +1,7 @@
+en:
+  question_screen:
+    title: "New Response"
+    swipe_to_change: "Swipe to turn pages"
+    accessibility_label: "question_screen"
+  survey_list_screen:
+    title: "List of Surveys"

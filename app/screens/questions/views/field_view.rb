@@ -1,6 +1,6 @@
 class FieldView < UIView
   include Helpers
-  include Constants
+ # include Constants
   
   MAX_WIDTH = 300
   

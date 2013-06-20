@@ -1,10 +1,6 @@
 describe "QuestionScreen" do
 
   before do
-    @delegate = TestDelegate.new
-    # @first_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "first_question"}
-    # @second_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "second_question"}
-    #Question.should.receive(:find).and_return([@first_arg, @second_arg])
     @questions_screen = QuestionScreen.new
     @questions_screen.survey_id = 5
     @questions_screen.on_load
@@ -42,6 +38,6 @@ describe "QuestionScreen" do
 
   it "should add a submit button to the parent view" do
     questions = @questions_screen.instance_variable_get(:@questions)
-    questions.last.viewWithTag(300).should.not.be.nil
+    questions.last.viewWithTag(Tags::SubmitButtonView).should.not.be.nil
   end
 end
