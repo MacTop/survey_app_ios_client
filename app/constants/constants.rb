@@ -4,6 +4,7 @@ module Constants
     FieldViewLabel                   = 100
     FieldViewTextField               = 200
     HeaderView                       = 250
+    SubmitButtonView                 = 300
   end
   
   class ControlVariables
@@ -15,5 +16,7 @@ module Constants
     LogoHeight                       = 35
     LogoWidth                        = 35
     SwipeBannerHeight                = 40
+    SubmitButtonWidth                = 220
+    SubmitButtonHeight               = 40
   end
 end

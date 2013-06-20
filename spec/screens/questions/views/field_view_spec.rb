@@ -1,3 +1,4 @@
+=begin
 describe "FieldView" do
   before do
     @args = {:type => "SingleLineQuestion", :origin_y => 100, :content => "single_line_question_statement"}
@@ -36,3 +37,4 @@ describe "FieldView" do
     @field_view.viewWithTag(200).delegate.class.should == QuestionScreen
   end
 end
+=end

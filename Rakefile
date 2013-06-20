@@ -4,6 +4,7 @@ require 'motion/project/template/ios'
 require 'rubygems'
 require 'motion-testflight'
 require 'sugarcube-gestures'
+require 'motion-cocoapods'
 require 'bundler'
 
 if ARGV.join(' ') =~ /spec/
@@ -12,6 +13,9 @@ else
   Bundler.require
 end
 
+# documents_path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true)[0]
+# NanoStore.shared_store = NanoStore.store(:file, "./nano.db")
+
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'survey_app'
@@ -19,6 +23,11 @@ Motion::Project::App.setup do |app|
   app.icons = ['Icon-Small-50.png', 'Icon-Small@2x.png', 'iTunesArtwork.png', 'Icon-72.png', 'Icon-Small-50@2x.png', 'Icon.png', 'iTunesArtwork@2x.png', 'Icon-72@2x.png', 'Icon-Small.png', 'Icon@2x.png']
   app.device_family = :iphone
   app.interface_orientations = [:portrait]
+
+  #cocoa pods
+  app.pods do
+    pod 'NanoStore', '~> 2.6.4'
+  end
   
   #testflight config
   app.testflight.sdk = "vendor/TestFlight"

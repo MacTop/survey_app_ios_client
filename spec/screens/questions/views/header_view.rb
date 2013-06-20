@@ -1,9 +1,10 @@
 describe "Header View" do
   before do
-    @args = {:type => "SingleLineQuestion", :origin_y => 100, :content => "single_line_question_statement"}
+    # @args = {:type => "SingleLineQuestion", :origin_y => 100, :content => "single_line_question_statement"}
     @delegate = TestDelegate.new
-    Question.should.receive(:get_survey).and_return([@args])
+    # Question.should.receive(:get_survey).and_return([@args])
     @questions_screen = QuestionScreen.new
+    @questions_screen.survey_id = 5
     @questions_screen.on_load
     @header_views = @questions_screen.view.subviews.select{|view| view if view.class == HeaderView}
   end

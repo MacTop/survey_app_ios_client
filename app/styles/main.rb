@@ -1,5 +1,5 @@
 Teacup::Stylesheet.new :main do
   style :base_theme,
-  backgroundColor: ControlVariables::ScreenColor
+  backgroundColor: UIColor.whiteColor
   
 end

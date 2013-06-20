@@ -2,10 +2,11 @@ describe "QuestionScreen" do
 
   before do
     @delegate = TestDelegate.new
-    @first_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "first_question"}
-    @second_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "second_question"}
-    Question.should.receive(:get_survey).and_return([@first_arg, @second_arg])
+    # @first_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "first_question"}
+    # @second_arg = {:type => "SingleLineQuestion", :origin_y => 100, :content => "second_question"}
+    #Question.should.receive(:find).and_return([@first_arg, @second_arg])
     @questions_screen = QuestionScreen.new
+    @questions_screen.survey_id = 5
     @questions_screen.on_load
   end
 
@@ -32,5 +33,15 @@ describe "QuestionScreen" do
   it "should include header view" do
     sub_views = @questions_screen.view.subviews.collect{|sub_view| sub_view.class.to_s}
     sub_views.should.include "HeaderView"
+  end
+
+  it "should return true if the current page is the last page" do
+    @questions_screen.instance_variable_set(:@current_page, 2)
+    @questions_screen.is_last_page?.should == true
+  end
+
+  it "should add a submit button to the parent view" do
+    questions = @questions_screen.instance_variable_get(:@questions)
+    questions.last.viewWithTag(300).should.not.be.nil
   end
 end

@@ -1,29 +1,34 @@
 class QuestionScreen < PM::Screen
+  attr_accessor :survey_id
   include Helpers
   include Constants
+  stylesheet :main
 
   SwipeToChange = "Swipe to turn pages"
   
   def on_load
     @@this_controller = self
-    set_attributes self.view, {
-      backgroundColor: ControlVariables::ScreenColor
-    }
+    set_attributes self.view, stylename: :base_theme
     self.view.addSubview(HeaderView.new({:title => "New Response"}))
     self.view.accessibilityLabel = "question_screen"
     @questions = []
     @current_page = 0
-    Question.get_survey.each_with_index do |question, index|
-      question[:content] = "#{index+1}. #{question[:content]}"
-      question[:origin_y] = get_origin_y self.view
-      @questions << FieldView.new(question)
-    end
+    populate_questions
     self.view.addSubview(@questions[0])
     add_swipe_view
-    swipe_left_handler
-    swipe_right_handler
+    self.view.on_swipe(direction: :left, fingers: 1){self.swipe_left_handler}
+    self.view.on_swipe(direction: :right, fingers: 1){self.swipe_right_handler}
+    add_submit_button unless @questions.empty?
   end
 
+  def populate_questions
+    self.survey_id = 5
+    Question.find(:survey_id => self.survey_id).each do |question|
+      field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
+      @questions << field_view
+    end
+  end
+  
   def will_appear
      self.navigationController.setNavigationBarHidden(true, animated: false)
   end
@@ -85,26 +90,37 @@ class QuestionScreen < PM::Screen
   end
 
   def swipe_left_handler
-    
-    self.view.on_swipe(direction: :left, fingers: 1) do
-      if @current_page < @questions.count-1
-        @current_page += 1
-        self.addQuestionView(ControlVariables::ScreenWidth)
-      end
+    if @current_page < @questions.count-1
+      @current_page += 1
+      self.addQuestionView(ControlVariables::ScreenWidth)
     end
   end
 
   def swipe_right_handler
-    self.view.on_swipe(direction: :right, fingers: 1) do
-      unless @current_page.zero?
-        @current_page -= 1
-        self.addQuestionView(-ControlVariables::ScreenWidth)
-      end
+    unless @current_page.zero?
+      @current_page -= 1
+      self.addQuestionView(-ControlVariables::ScreenWidth)
     end
+  end
+  
+  def is_last_page?
+    @current_page == @questions.count-1
+  end
+
+  def add_submit_button
+    button_width = ControlVariables::SubmitButtonWidth
+    button_height = ControlVariables::SubmitButtonHeight
+    view_size = @questions.last.frame.size
+    origin  = view_size.height + ControlVariables::QuestionMargin
+    submit_button = UIButton.buttonWithType(UIButtonTypeCustom)
+    submit_button.frame = CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+    submit_button.setTag(Tags::SubmitButtonView)
+    submit_button.setTitle("Complete", forState: UIControlStateNormal)
+    submit_button.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    @questions.last.addSubview(submit_button)
   end
   
   def self.this_controller
     @@this_controller
   end
-
 end
