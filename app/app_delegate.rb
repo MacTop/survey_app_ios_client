@@ -21,4 +21,7 @@ class AppDelegate < PM::Delegate
     end
   end
   
+  def get_navigation_controller
+    self.home_screen.navigation_controller if self.home_screen
+  end
 end

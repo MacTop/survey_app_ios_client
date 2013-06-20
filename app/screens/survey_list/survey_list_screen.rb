@@ -13,10 +13,6 @@ class SurveyListScreen < PM::Screen
     end
   end
 
-  def show_alert
-    open QuestionScreen.new
-  end
-
   def will_appear
      self.navigationController.setNavigationBarHidden(true, animated: false)
   end
@@ -25,5 +21,8 @@ class SurveyListScreen < PM::Screen
      self.navigationController.setNavigationBarHidden(false, animated: true)
   end
 
+  def show_questions_screen
+    open QuestionScreen.new
+  end
   
 end

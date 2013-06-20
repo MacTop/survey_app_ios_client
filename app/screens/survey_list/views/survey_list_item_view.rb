@@ -1,8 +1,6 @@
 class SurveyListItemView < UIView
   include Helpers
 
-  stylesheet :main
-  
   MAX_WIDTH = 300
   MARGIN = 10
   RESPONSE_NAVIGATION_WIDTH = 50
@@ -53,6 +51,9 @@ class SurveyListItemView < UIView
     response_navigation_label.text = "+"
     response_navigation_label.setTag Tags::ResponseNavigationLabel
     subview(response_navigation_label,:response_navigation_label)
+    response_navigation_label.userInteractionEnabled = true
+    response_navigation_label.on_tap { self.superview.controller.show_questions_screen }
     self.addSubview(response_navigation_label)
   end
+
 end

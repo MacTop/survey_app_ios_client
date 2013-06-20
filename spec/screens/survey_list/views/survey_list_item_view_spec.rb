@@ -17,4 +17,5 @@ describe "SurveyListItemView" do
   it "should add the response navigation view" do
     @survey_list_item_view.viewWithTag(Tags::ResponseNavigationLabel).should.not.be.nil
   end
+
 end

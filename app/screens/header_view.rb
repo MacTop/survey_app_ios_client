@@ -1,8 +1,14 @@
 class HeaderView < UIView
   include Helpers
-#  include Constants
+
+  def initWithFrame(frame)
+    super.tap do
+      self.stylesheet = :main
+    end
+  end
 
   def initialize(args = {})
+    @app_delegate = UIApplication.sharedApplication.delegate
     self.initWithFrame CGRectMake(0, 0, ControlVariables::ScreenWidth, ControlVariables::HeaderHeight)
     start_color = UIColor.colorWithRed(0.227, green: 0.559, blue: 0.657, alpha: 1)
     end_color = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
@@ -12,6 +18,7 @@ class HeaderView < UIView
     self.layer.insertSublayer gradient, atIndex: 0
     add_logo
     add_title(args)
+    add_back_button_if_needed
   end
 
   def add_logo
@@ -28,5 +35,30 @@ class HeaderView < UIView
     new_frame.origin.y = 10
     label_view.frame = new_frame
     self.addSubview(label_view)
+  end
+
+  def back_button_needed?
+    if @app_delegate.home_screen
+      return @app_delegate.home_screen.navigation_controller.viewControllers.length > 0
+    end
+    return false
+  end
+  
+  def add_back_button_if_needed
+    if(self.back_button_needed?)
+      back_button = UIButton.buttonWithType(UIButtonTypeCustom)
+      back_button.setTitle("Back", forState:UIControlStateNormal)
+      back_button.layer.cornerRadius = 5
+      # back_button.setImage(UIImage.imageNamed("logo.png"), forState:UIControlStateNormal)
+      back_button.setTintColor(UIColor.blackColor)
+      subview(back_button,:back_button)
+      self.addSubview(back_button)
+      back_button.on_tap { back_to_previous_screen }
+    end
+  end
+
+  def back_to_previous_screen
+    navigation_controller = @app_delegate.get_navigation_controller
+    navigation_controller.popToRootViewControllerAnimated(true) 
   end
 end

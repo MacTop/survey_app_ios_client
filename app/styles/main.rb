@@ -27,4 +27,9 @@ Teacup::Stylesheet.new :main do
   backgroundColor: @header_background_color,
   textAlignment: NSTextAlignmentCenter,
   textColor: UIColor.whiteColor
+
+  style :back_button,
+  backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
+  frame: [[5,5],[60,30]],
+  font: UIFont.systemFontOfSize(14)
 end
