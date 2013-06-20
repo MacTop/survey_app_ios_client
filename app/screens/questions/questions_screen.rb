@@ -25,11 +25,11 @@ class QuestionScreen < PM::Screen
   end
 
   def will_appear
-     self.navigationController.setNavigationBarHidden(true, animated: false)
+    self.navigationController.setNavigationBarHidden(true, animated: false)
   end
 
   def will_disappear
-     self.navigationController.setNavigationBarHidden(false, animated: true)
+    self.navigationController.setNavigationBarHidden(false, animated: true)
   end
   
   def textFieldDidBeginEditing(textField)
