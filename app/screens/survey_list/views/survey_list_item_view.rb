@@ -17,9 +17,9 @@ class SurveyListItemView < UIView
   def initialize(args = {})
     self.initWithFrame CGRectMake(MARGIN, args[:origin_y]+ ControlVariables::QuestionMargin, MAX_WIDTH, 100)
     self.backgroundColor = UIColor.whiteColor
-    set_survey_name args[:survey_name]
-    set_survey_description args[:description]
-    set_survey_expiry_date args[:expiry_date]
+    set_survey_name args[:survey].name
+    set_survey_description args[:survey].description
+    set_survey_expiry_date args[:survey].expiry_date
     add_response_navigation_view
   end
 

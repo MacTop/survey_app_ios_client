@@ -7,7 +7,7 @@ class DataStore
 
   def self.import
     get_data_for("surveys").each_with_index do |survey, index|
-      survey_model = Survey.new(:id => survey[:id], :name => survey[:name], :expiry_date => survey[:expiry_date])
+      survey_model = Survey.new(:id => survey[:id], :name => survey[:name], :expiry_date => survey[:expiry_date], :description => survey[:description])
       survey_model.save
     end
 

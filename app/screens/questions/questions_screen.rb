@@ -20,6 +20,7 @@ class QuestionScreen < PM::Screen
     add_submit_button unless @questions.empty?
   end
 
+
   def populate_questions
     self.survey_id = 5
     Question.find(:survey_id => self.survey_id).each do |question|
@@ -117,6 +118,29 @@ class QuestionScreen < PM::Screen
     submit_button.setTitle("Complete", forState: UIControlStateNormal)
     submit_button.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
     @questions.last.addSubview(submit_button)
+    @questions.last.reset_field_frame
+    submit_button.when(UIControlEventTouchUpInside) do
+      save_response
+    end
+  end
+
+  def save_response
+    survey_response = SurveyResponse.new(:survey_id => self.survey_id)
+    survey = Survey.find(:id => self.survey_id).first
+    is_valid = true
+    @questions.each do |field_view|
+      question_id = field_view.question_id
+      answer_content = field_view.viewWithTag(Tags::FieldViewTextField).text
+      answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content)
+      is_valid = false unless is_valid && answer.valid?
+      survey_response.answers << answer
+    end
+    if is_valid
+      survey_response.save
+      survey.survey_responses << survey_response
+      survey.save
+      UIAlertView.alert("Survey response saved successfully!")
+    end
   end
   
   def self.this_controller

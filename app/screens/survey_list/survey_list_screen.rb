@@ -7,10 +7,9 @@ class SurveyListScreen < PM::Screen
   def on_load
     set_attributes self.view, stylename: :base_theme
     add HeaderView.new({:title => I18n.t('survey_list_screen.title')})
-    Survey.get_survey_list.each_with_index do |survey, index|
+    Survey.all.each do |survey|
       origin_y = get_origin_y self.view
-      args = {:survey_name => survey[:name], :description => survey[:description], :expiry_date => survey[:expiry_date], :origin_y => origin_y}
-      add SurveyListItemView.new(args)
+      add SurveyListItemView.new({:survey => survey, :origin_y => origin_y})
     end
   end
 

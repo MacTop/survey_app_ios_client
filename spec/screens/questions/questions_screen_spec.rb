@@ -40,4 +40,22 @@ describe "QuestionScreen" do
     questions = @questions_screen.instance_variable_get(:@questions)
     questions.last.viewWithTag(Tags::SubmitButtonView).should.not.be.nil
   end
+
+  it "should receive click handler on click of submit button" do
+    @questions_screen.should.receive(:save_response)
+    questions = @questions_screen.instance_variable_get(:@questions)
+    questions.last.viewWithTag(Tags::SubmitButtonView).sendActionsForControlEvents(UIControlEventTouchUpInside)
+  end
+
+  it "should save the response" do
+    questions = @questions_screen.instance_variable_get(:@questions)
+    questions.each do |question|
+      question.viewWithTag(Tags::FieldViewTextField).text = "content"
+    end
+    previous_response_count = SurveyResponse.all.count
+    previous_answers_count = Answer.all.count
+    @questions_screen.save_response
+    SurveyResponse.all.count.should > previous_response_count
+    Answer.all.count.should > previous_answers_count
+  end
 end
