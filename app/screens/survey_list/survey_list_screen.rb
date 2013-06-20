@@ -22,7 +22,11 @@ class SurveyListScreen < PM::Screen
   end
 
   def show_questions_screen
-    open QuestionScreen.new
+    open QuestionScreen.new(survey_id: 2) 
   end
-  
+
+  def show_questions_screen_for survey_id
+    open QuestionScreen.new(survey_id: survey_id) 
+  end
+
 end

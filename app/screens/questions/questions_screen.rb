@@ -22,7 +22,6 @@ class QuestionScreen < PM::Screen
 
 
   def populate_questions
-    self.survey_id = 5
     Question.find(:survey_id => self.survey_id).each do |question|
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
       @questions << field_view
