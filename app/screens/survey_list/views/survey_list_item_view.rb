@@ -14,7 +14,7 @@ class SurveyListItemView < UIView
 
 
   def initialize(args = {})
-    self.initWithFrame CGRectMake(MARGIN, args[:origin_y]+ ControlVariables::QuestionMargin, MAX_WIDTH, 100)
+    self.initWithFrame CGRectMake(MARGIN,  ControlVariables::QuestionMargin, MAX_WIDTH, 100)
     self.backgroundColor = UIColor.whiteColor
     set_survey_name args[:survey].name
     set_survey_description args[:survey].description
