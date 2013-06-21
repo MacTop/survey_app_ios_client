@@ -48,6 +48,7 @@ describe "QuestionScreen" do
   end
 
   it "should save the response" do
+    @questions_screen.stub!(:navigation_controller).and_return(UINavigationController.new)
     questions = @questions_screen.instance_variable_get(:@questions)
     questions.each do |question|
       question.viewWithTag(Tags::FieldViewTextField).text = "content"
@@ -57,5 +58,21 @@ describe "QuestionScreen" do
     @questions_screen.save_response
     SurveyResponse.all.count.should > previous_response_count
     Answer.all.count.should > previous_answers_count
+  end
+
+  it "should set error field on validation failure" do
+    questions = @questions_screen.instance_variable_get(:@questions)
+    @questions_screen.instance_variable_set(:@current_page,1)
+    questions.each do |question|
+      question.viewWithTag(Tags::FieldViewTextField).text = "content"
+    end
+    unfilled_question = questions.first
+    related_question = Question.find(:id => unfilled_question.question_id).first
+    related_question.mandatory = true
+    unfilled_question.viewWithTag(Tags::FieldViewTextField).text = ""
+    @questions_screen.should_receive(:addQuestionView)
+    @questions_screen.save_response
+    unfilled_question.viewWithTag(Tags::ErrorFieldViewLabel).text.should == I18n.t('field_view.error')
+    @questions_screen.instance_variable_get(:@current_page).should == 0
   end
 end

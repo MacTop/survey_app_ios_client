@@ -5,3 +5,7 @@ en:
     accessibility_label: "question_screen"
   survey_list_screen:
     title: "List of Surveys"
+  response:
+    success: "Survey response saved successfully!"
+  field_view:
+    error: "This question is mandatory"
