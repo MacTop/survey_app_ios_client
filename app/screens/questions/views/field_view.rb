@@ -38,7 +38,8 @@ class FieldView < UIView
   end
 
   def reset_error_message
-    update_error_message("", 0, -25)
+    error_label = self.viewWithTag(Tags::ErrorFieldViewLabel)
+    update_error_message("", 0, -25) unless error_label.text.blank?
   end
 
   def update_error_message(text, height, offset)
