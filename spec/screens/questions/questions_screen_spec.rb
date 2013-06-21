@@ -69,6 +69,7 @@ describe "QuestionScreen" do
     unfilled_question = questions.first
     related_question = Question.find(:id => unfilled_question.question_id).first
     related_question.mandatory = true
+    related_question.save
     unfilled_question.viewWithTag(Tags::FieldViewTextField).text = ""
     @questions_screen.should_receive(:addQuestionView)
     @questions_screen.save_response
