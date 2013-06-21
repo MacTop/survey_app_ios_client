@@ -3,6 +3,7 @@
     FieldViewLabel                   = 100
     FieldViewTextField               = 200
     HeaderView                       = 250
+    SubmitButtonView                 = 310
     SurveyNameLabel                  = 300
     SurveyDescriptionLabel           = 350
     SurveyExpiryDateLabel            = 400
@@ -18,4 +19,6 @@
     LogoHeight                       = 35
     LogoWidth                        = 35
     SwipeBannerHeight                = 40
+    SubmitButtonWidth                = 220
+    SubmitButtonHeight               = 40
   end

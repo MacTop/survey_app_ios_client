@@ -1,6 +1,6 @@
 class FieldView < UIView
+  attr_accessor :question_id
   include Helpers
- # include Constants
   
   MAX_WIDTH = 300
   
@@ -8,20 +8,25 @@ class FieldView < UIView
     self.initWithFrame CGRectMake(10, args[:origin_y] + ControlVariables::QuestionMargin, MAX_WIDTH, 300)
     self.backgroundColor = UIColor.clearColor
     set_question_statement(args)
-    self.send("handle_#{args[:type]}")
-    total_view_height = get_origin_y self
-    new_frame = self.frame
-    new_frame.size.height = total_view_height
-    self.frame = new_frame
+    self.send("handle_#{args[:question].type}")
+    self.reset_field_frame
+    self.question_id = args[:question].id 
     self.setTag Tags::FieldView
   end
 
   def set_question_statement(args)
     label_view = UILabel.alloc.initWithFrame(CGRectMake(0, 0, frame.size.width, ControlVariables::LabelHeight))
-    set_label_dynamicity label_view, args[:content]
+    set_label_dynamicity label_view, args[:question].content
     label_view.backgroundColor = UIColor.clearColor
     label_view.textColor = UIColor.colorWithRed(0.01, green: 0.2, blue: 0.01, alpha: 1)
     self.addSubview(label_view)
+  end
+
+  def reset_field_frame
+    total_view_height = get_origin_y self
+    new_frame = self.frame
+    new_frame.size.height = total_view_height
+    self.frame = new_frame
   end
 
   def handle_SingleLineQuestion

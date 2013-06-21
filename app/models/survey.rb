@@ -1,10 +1,8 @@
-class Survey
-  def self.get_survey_list
-    BW::JSON.parse(get_survey_list_data)
-  end
-
-  def self.get_survey_list_data
-    file_path = NSBundle.mainBundle.pathForResource("surveys", ofType: "json")
-    NSData.dataWithContentsOfFile file_path
-  end
+class Survey < NanoStore::Model
+  attribute :id
+  attribute :name
+  attribute :expiry_date
+  attribute :description
+  bag :questions
+  bag :survey_responses
 end

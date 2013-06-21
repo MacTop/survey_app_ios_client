@@ -6,9 +6,8 @@ class SurveyListScreen < PM::Screen
 
   def on_load
     set_attributes self.view, stylename: :base_theme
-    header_view = HeaderView.new({:title => I18n.t('survey_list_screen.title')})
-    add header_view
-    @data = Survey.get_survey_list
+    add header_view = HeaderView.new({:title => I18n.t('survey_list_screen.title')})
+    @data = []
     header_view_height = header_view.frame.size.height
     @table = UITableView.alloc.initWithFrame CGRectMake(0, header_view_height, self.view.frame.size.width, self.view.frame.size.height -  header_view_height)
     @table.setSeparatorStyle(UITableViewCellSeparatorStyleNone)
@@ -16,6 +15,9 @@ class SurveyListScreen < PM::Screen
     self.view.addSubview @table
     @table.dataSource = self
     @table.delegate = self
+    Survey.all.each do |survey|
+      @data <<  SurveyListItemView.new({:survey => survey})
+    end
   end
 
   def will_appear
@@ -27,24 +29,17 @@ class SurveyListScreen < PM::Screen
   end
 
   def show_questions_screen
-    open QuestionScreen.new
+    open QuestionScreen.new(survey_id: 2) 
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     @reuseIdentifier ||= "CELL_IDENTIFIER"
-
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:@reuseIdentifier)
     end
-
     cell.selectionStyle = UITableViewCellSelectionStyleNone
     cell.contentView.backgroundColor = ControlVariables::ScreenColor
-    
-    survey = @data[indexPath.row]
-    args = {:survey_name => survey[:name], :description => survey[:description], :expiry_date => survey[:expiry_date]}
-
-    view = SurveyListItemView.new(args)
-    cell.contentView.addSubview(view)
+    cell.contentView.addSubview(@data[indexPath.row])
     cell    
   end
 
@@ -56,4 +51,7 @@ class SurveyListScreen < PM::Screen
    130
   end
   
+  def show_questions_screen_for survey_id
+    open QuestionScreen.new(survey_id: survey_id) 
+  end
 end
