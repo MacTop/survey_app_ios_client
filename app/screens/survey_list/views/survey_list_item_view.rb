@@ -24,30 +24,26 @@ class SurveyListItemView < UIView
   end
 
   def set_survey_name text
-    survey_name_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, 0, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
-    survey_name_label.text = text
-    survey_name_label.setTag Tags::SurveyNameLabel
-    subview(survey_name_label,:survey_item_heading)
-    self.addSubview(survey_name_label)
+    survey_item_field text, 0, Tags::SurveyNameLabel, :survey_item_heading
   end
   
   def set_survey_description text
-    survey_description_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, 20, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
-    survey_description_label.text = text
-    survey_description_label.setTag Tags::SurveyDescriptionLabel
-    subview(survey_description_label,:survey_item_description)
-    self.addSubview(survey_description_label)
-    
+    survey_item_field text, 20, Tags::SurveyDescriptionLabel, :survey_item_description
   end
   
   def set_survey_expiry_date text
-    survey_expiry_date_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, 55, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
-    survey_expiry_date_label.text = "Expires on #{text}"
-    survey_expiry_date_label.setTag Tags::SurveyExpiryDateLabel
-    subview(survey_expiry_date_label,:survey_item_expiry_date)
-    self.addSubview(survey_expiry_date_label)
+    text = I18n.t('survey_list_screen.expiry_date', :date => text)
+    survey_item_field text, 55, Tags::SurveyExpiryDateLabel, :survey_item_expiry_date
   end
 
+  def survey_item_field text, height, tag, style
+    field_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, height, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
+    field_label.text = text
+    field_label.setTag tag
+    subview(field_label, style)
+    self.addSubview(field_label)
+  end
+  
   def add_response_navigation_view
     response_navigation_label = UILabel.alloc.initWithFrame(CGRectMake(frame.size.width-RESPONSE_NAVIGATION_WIDTH, 0, RESPONSE_NAVIGATION_WIDTH, frame.size.height))
     response_navigation_label.text = "+"

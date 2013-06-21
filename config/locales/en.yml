@@ -5,6 +5,7 @@ en:
     accessibility_label: "question_screen"
   survey_list_screen:
     title: "List of Surveys"
+    expiry_date: "Expires on %{date}"
   response:
     success: "Survey response saved successfully!"
   field_view:
