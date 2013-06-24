@@ -1,0 +1,3 @@
+describe "ResponseListItemTemplate" do
+
+end

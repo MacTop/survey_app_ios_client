@@ -7,29 +7,37 @@ Teacup::Stylesheet.new :main do
   @expiry_date_text_font = UIFont.systemFontOfSize(14)
   
   style :base_theme,
-  backgroundColor: ControlVariables::ScreenColor
+    backgroundColor: ControlVariables::ScreenColor
 
   style :survey_item,
-  backgroundColor: @survey_item_background_color,
-  textColor: @survey_item_text_color
+    backgroundColor: @survey_item_background_color,
+    textColor: @survey_item_text_color
 
   
   style :survey_item_heading, extends: :survey_item,
-  font: @heading_text_font
+    font: @heading_text_font
 
   style :survey_item_description, extends: :survey_item,
-  font: @description_text_font
+    font: @description_text_font
 
   style :survey_item_expiry_date, extends: :survey_item,
-  font: @expiry_date_text_font
+    font: @expiry_date_text_font
   
   style :response_navigation_label,
-  backgroundColor: @header_background_color,
-  textAlignment: NSTextAlignmentCenter,
-  textColor: UIColor.whiteColor
+    backgroundColor: @header_background_color,
+    textAlignment: NSTextAlignmentCenter,
+    textColor: UIColor.whiteColor
 
   style :back_button,
-  backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
-  frame: [[5,5],[60,30]],
-  font: UIFont.systemFontOfSize(14)
+    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
+    frame: [[5,5],[60,30]],
+    font: UIFont.systemFontOfSize(14)
+
+  style :response_table,
+    backgroundColor: ControlVariables::ScreenColor
+
+  style :response_container_view,
+    origin: [8,7],
+    size: [284, 86],
+    backgroundColor: UIColor.redColor
 end

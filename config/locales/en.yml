@@ -5,3 +5,5 @@ en:
     accessibility_label: "question_screen"
   survey_list_screen:
     title: "List of Surveys"
+  response_list_screen:
+    title: "List of responses"
