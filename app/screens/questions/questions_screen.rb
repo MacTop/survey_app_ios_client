@@ -1,5 +1,6 @@
 class QuestionScreen < PM::Screen
   attr_accessor :survey_id
+  attr_accessor :first_field_view_with_error
   include Helpers
   stylesheet :main
 
@@ -15,14 +16,19 @@ class QuestionScreen < PM::Screen
     populate_questions
     self.view.addSubview(@questions[0])
     add_swipe_view
-    self.view.on_swipe(direction: :left, fingers: 1){self.swipe_left_handler}
-    self.view.on_swipe(direction: :right, fingers: 1){self.swipe_right_handler}
+    add_swipe_bindings
     add_submit_button unless @questions.empty?
   end
 
+  def add_swipe_bindings
+    self.view.on_swipe(direction: :left, fingers: 1){self.swipe_left_handler}
+    self.view.on_swipe(direction: :right, fingers: 1){self.swipe_right_handler}
+  end
 
   def populate_questions
-    Question.find(:survey_id => self.survey_id).each do |question|
+    Question.find(:survey_id => self.survey_id).each_with_index do |question, index|
+      question.content = "#{index+1}. #{question.content}"
+      question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
       @questions << field_view
     end
@@ -126,20 +132,44 @@ class QuestionScreen < PM::Screen
   def save_response
     survey_response = SurveyResponse.new(:survey_id => self.survey_id)
     survey = Survey.find(:id => self.survey_id).first
+    self.first_field_view_with_error = nil
+    if valid_anwsers? survey_response
+      survey_response.save
+      survey.survey_responses << survey_response
+      survey.save
+      self.navigation_controller.popToRootViewControllerAnimated(true) 
+      UIAlertView.alert(I18n.t('response.success'))
+    else
+      show_first_error_view
+    end
+  end
+
+  def valid_anwsers? survey_response
     is_valid = true
     @questions.each do |field_view|
       question_id = field_view.question_id
       answer_content = field_view.viewWithTag(Tags::FieldViewTextField).text
       answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content)
+      field_view.reset_error_message if answer.valid?
+      set_error_field field_view unless answer.valid?
       is_valid = false unless is_valid && answer.valid?
       survey_response.answers << answer
     end
-    if is_valid
-      survey_response.save
-      survey.survey_responses << survey_response
-      survey.save
-      UIAlertView.alert("Survey response saved successfully!")
+    is_valid
+  end
+
+  def show_first_error_view
+    error_page = @questions.indexOfObject(self.first_field_view_with_error)
+    if @current_page != error_page
+      @current_page = error_page
+      self.addQuestionView(-ControlVariables::ScreenWidth)
     end
+  end
+
+  def set_error_field field_view
+    self.first_field_view_with_error = field_view if self.first_field_view_with_error.nil?
+    error_label = field_view.viewWithTag(Tags::ErrorFieldViewLabel)
+    field_view.set_error_message if error_label.text.blank?
   end
   
   def self.this_controller

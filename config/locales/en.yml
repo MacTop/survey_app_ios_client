@@ -5,5 +5,10 @@ en:
     accessibility_label: "question_screen"
   survey_list_screen:
     title: "List of Surveys"
+    expiry_date: "Expires on %{date}"
   response_list_screen:
     title: "List of responses"
+  response:
+    success: "Survey response saved successfully!"
+  field_view:
+    error: "This question is mandatory"
