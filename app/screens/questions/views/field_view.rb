@@ -9,9 +9,9 @@ class FieldView < UIView
     self.backgroundColor = UIColor.clearColor
     set_question_statement(args)
     set_error_field
+    self.question_id = args[:question].id 
     self.send("handle_#{args[:question].type}")
     self.reset_field_frame
-    self.question_id = args[:question].id 
     self.setTag Tags::FieldView
   end
 
@@ -82,9 +82,7 @@ class FieldView < UIView
 
   def handle_RadioQuestion
     origin = get_origin_y self
-    puts question_id
-    #data = ['a']
-    data = Question.find(:id => question_id).first.radio_options.to_a.collect{|option| option.content}
+    data = Question.find(:id => self.question_id).first.radio_options.to_a.collect{|option| option.content}
     new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin,MAX_WIDTH,  min_count(data) * ControlVariables::TableRowHeightDefault)
     @radio_buttons_controller = RadioButtons.new(data: data, frame: new_frame)
     @radio_buttons_controller.view.frame = new_frame
