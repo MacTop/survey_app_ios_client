@@ -17,6 +17,7 @@ tmp
 _yardoc
 doc/
 
+.dat*
 
 #build files
 build

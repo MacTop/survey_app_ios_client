@@ -2,6 +2,7 @@ describe "Survey List Screen" do
   before do
     @survey_list_screen = SurveyListScreen.new
     @survey_list_screen.on_load
+    @survey = Survey.all.first
   end
   
   it "should include header view" do
@@ -26,5 +27,12 @@ describe "Survey List Screen" do
       arg.class.should == QuestionScreen
     end
     @survey_list_screen.show_questions_screen
+  end
+
+  it "should show response list view on tap of a listed survey" do
+    @survey_list_screen.should_receive(:open) do |arg|
+      arg.class.should == ResponseListScreen
+    end
+    @survey_list_screen.show_responses_screen_for @survey.id
   end
 end

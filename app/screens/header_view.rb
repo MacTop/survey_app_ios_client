@@ -59,6 +59,6 @@ class HeaderView < UIView
 
   def back_to_previous_screen
     navigation_controller = @app_delegate.get_navigation_controller
-    navigation_controller.popToRootViewControllerAnimated(true) 
+    navigation_controller.popViewControllerAnimated(true) 
   end
 end

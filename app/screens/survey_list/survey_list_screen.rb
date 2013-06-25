@@ -42,7 +42,7 @@ class SurveyListScreen < PM::Screen
     cell.contentView.addSubview(@data[indexPath.row])
     cell    
   end
-
+  
   def tableView(tableView, numberOfRowsInSection: section)
     @data.count
   end
@@ -53,5 +53,9 @@ class SurveyListScreen < PM::Screen
   
   def show_questions_screen_for survey_id
     open QuestionScreen.new(survey_id: survey_id) 
+  end
+
+  def show_responses_screen_for survey_id
+    open ResponseListScreen.new(survey_id: survey_id)
   end
 end
