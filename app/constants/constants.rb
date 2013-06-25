@@ -9,6 +9,8 @@
     SurveyExpiryDateLabel            = 400
     ResponseNavigationLabel          = 450
     ErrorFieldViewLabel              = 500
+    ResponseQuestionAnswerLabel      = 550
+    EmptyResponseMessageLabel        = 600
   end
   
   class ControlVariables

@@ -1,6 +1,7 @@
 class QuestionScreen < PM::Screen
   attr_accessor :survey_id
   attr_accessor :first_field_view_with_error
+  attr_accessor :header_view
   include Helpers
   stylesheet :main
 
@@ -9,7 +10,8 @@ class QuestionScreen < PM::Screen
   def on_load
     @@this_controller = self
     set_attributes self.view, stylename: :base_theme
-    self.view.addSubview(HeaderView.new({:title => I18n.t('question_screen.title')}))
+    self.header_view = HeaderView.new({:title => I18n.t('question_screen.title')})
+    self.view.addSubview(self.header_view)
     self.view.accessibilityLabel = I18n.t('question_screen.accessibility_label')
     @questions = []
     @current_page = 0
@@ -130,14 +132,14 @@ class QuestionScreen < PM::Screen
   end
 
   def save_response
-    survey_response = SurveyResponse.new(:survey_id => self.survey_id)
+    survey_response = SurveyResponse.new(:survey_id => self.survey_id, :created_at => Time.now)
     survey = Survey.find(:id => self.survey_id).first
     self.first_field_view_with_error = nil
     if valid_anwsers? survey_response
       survey_response.save
       survey.survey_responses << survey_response
       survey.save
-      self.navigation_controller.popToRootViewControllerAnimated(true) 
+      self.header_view.back_to_previous_screen
       UIAlertView.alert(I18n.t('response.success'))
     else
       show_first_error_view
@@ -149,7 +151,7 @@ class QuestionScreen < PM::Screen
     @questions.each do |field_view|
       question_id = field_view.question_id
       answer_content = field_view.viewWithTag(Tags::FieldViewTextField).text
-      answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content)
+      answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content, :created_at => Time.now)
       field_view.reset_error_message if answer.valid?
       set_error_field field_view unless answer.valid?
       is_valid = false unless is_valid && answer.valid?

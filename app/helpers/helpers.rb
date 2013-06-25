@@ -1,4 +1,6 @@
 module Helpers
+
+  MAXIMUM_WIDTH = 300
   
   def get_origin_y view
     last_sub_view = view.subviews.last
@@ -33,4 +35,28 @@ module Helpers
   def getColor(color)
     UIColor.colorWithRed(color[:red], green: color[:green] ,blue: color[:blue], alpha: color[:alpha])
   end
+
+  def set_label_dynamicity label_view, text, tag
+    new_frame = label_view.frame
+    label_view.text = text
+    label_view.lineBreakMode = UILineBreakModeWordWrap
+    new_frame.size.height = get_label_height text, label_view
+    label_view.frame = new_frame
+    label_view.setTag tag
+    label_view.numberOfLines = 0
+  end
+  
+  def get_label_height text, label
+    max_label_size = CGSizeMake(MAXIMUM_WIDTH, Float::INFINITY)
+    expected_size = text.sizeWithFont(label.font, constrainedToSize: max_label_size,  lineBreakMode: label.lineBreakMode)
+    expected_size.height
+  end
+  
+  def reset_field_frame extra_height = 0
+    total_view_height = get_origin_y self
+    new_frame = self.frame
+    new_frame.size.height = total_view_height + extra_height
+    self.frame = new_frame
+  end
+
 end

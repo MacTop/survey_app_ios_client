@@ -41,7 +41,6 @@ class SurveyListItemTemplate < UIView
     field_label.text = text
     field_label.setTag tag
     subview(field_label, style)
-    self.addSubview(field_label)
   end
   
   def add_response_navigation_view

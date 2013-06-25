@@ -11,14 +11,15 @@ class ResponseListItemTemplate < UIView
   end
 
   def initialize(args = {})
-    puts args[:survey_id]
-    self.initWithFrame CGRectMake(MARGIN, ControlVariables::QuestionMargin, MAX_WIDTH, 100)
+    answer =  args[:survey_response].answers.to_a.sort_by{|answer| answer.created_at}.first
+    question = Question.find(:id => answer.question_id).first
+    question_answer_text = "#{question.content}: #{answer.content}"
+    self.initWithFrame CGRectMake(MARGIN, 0, MAX_WIDTH, 30)
     self.backgroundColor = UIColor.whiteColor
-    add_response_container_view
-  end
-
-  def add_response_container_view
-    response_container_view = UIView.alloc.initWithFrame(CGRectMake(0,0,0,0))
-    subview(response_container_view, :response_container_view)
+    question_answer_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, 10, MAX_WIDTH - (2*MARGIN), 40))
+    set_label_dynamicity question_answer_label, question_answer_text, Tags::ResponseQuestionAnswerLabel
+    subview(question_answer_label, :response_question_label)
+    reset_field_frame 10
+    self
   end
 end
