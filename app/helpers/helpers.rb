@@ -33,4 +33,5 @@ module Helpers
   def getColor(color)
     UIColor.colorWithRed(color[:red], green: color[:green] ,blue: color[:blue], alpha: color[:alpha])
   end
+
 end

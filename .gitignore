@@ -29,3 +29,6 @@ build
 
 #I18n generated files
 en.lproj
+
+#dat files
+.dat*

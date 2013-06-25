@@ -22,4 +22,6 @@
     SwipeBannerHeight                = 40
     SubmitButtonWidth                = 220
     SubmitButtonHeight               = 40
+    TableRowHeightDefault            = 44
+    RadioButtonsMaxCount             = 5
   end

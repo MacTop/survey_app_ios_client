@@ -2,6 +2,9 @@ class AppDelegate < PM::Delegate
   def on_load(app, options)
     initialize_nano_store
     open SurveyListScreen.new(nav_bar: true)
+    # rb = RadioButtons.new
+    # rb.data = ['red', 'green', 'blue']
+    # open rb
   end
 
   def initialize_nano_store

@@ -30,6 +30,7 @@ class QuestionScreen < PM::Screen
       question.content = "#{index+1}. #{question.content}"
       question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
+      field_view.question_id = question.id
       @questions << field_view
     end
   end

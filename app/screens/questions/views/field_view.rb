@@ -80,6 +80,22 @@ class FieldView < UIView
     self.addSubview(text_field)
   end
 
+  def handle_RadioQuestion
+    origin = get_origin_y self
+    puts question_id
+    #data = ['a']
+    data = Question.find(:id => question_id).first.radio_options.to_a.collect{|option| option.content}
+    new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin,MAX_WIDTH,  min_count(data) * ControlVariables::TableRowHeightDefault)
+    @radio_buttons_controller = RadioButtons.new(data: data, frame: new_frame)
+    @radio_buttons_controller.view.frame = new_frame
+    QuestionScreen.this_controller.addChildViewController(@radio_buttons_controller)
+    self.addSubview(@radio_buttons_controller.view)  
+  end
+
+  def min_count(data)
+    ControlVariables::RadioButtonsMaxCount < data.count ? ControlVariables::RadioButtonsMaxCount : data.count
+  end
+
   def viewDidAppear(animated)
     super
   end

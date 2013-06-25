@@ -4,6 +4,7 @@ class Question < NanoStore::Model
   attribute :content
   attribute :type
   attribute :mandatory
+  bag :radio_options
   
   def self.get_survey
     BW::JSON.parse(get_survey_data)

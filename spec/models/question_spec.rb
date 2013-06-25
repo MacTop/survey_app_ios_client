@@ -8,5 +8,9 @@ describe "Question" do
     questions.should.not.be.nil
     questions.class.should == Array
   end
-  
+
+  it "should have many radio options" do
+    question = Question.find(:id => 12).first
+    question.radio_options.to_a.class.should == Array
+  end
 end
