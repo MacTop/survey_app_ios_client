@@ -33,3 +33,6 @@ en.lproj
 
 #dat files
 .dat*
+
+#vendor files
+vendor
