@@ -11,6 +11,7 @@
     ErrorFieldViewLabel              = 500
     ResponseQuestionAnswerLabel      = 550
     EmptyResponseMessageLabel        = 600
+    RadioButtonLabel                 = 650
   end
   
   class ControlVariables
