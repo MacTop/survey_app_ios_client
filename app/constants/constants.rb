@@ -12,6 +12,7 @@
     ResponseQuestionAnswerLabel      = 550
     EmptyResponseMessageLabel        = 600
     RadioButtonLabel                 = 650
+    RadioControllerView              = 700
   end
   
   class ControlVariables
@@ -27,4 +28,6 @@
     SubmitButtonHeight               = 40
     TableRowHeightDefault            = 44
     RadioButtonsMaxCount             = 5
+    RadioCellPadding                 = 25
+    MaximumRadioButtonTableHeight    = 240
   end

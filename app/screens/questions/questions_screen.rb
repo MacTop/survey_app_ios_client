@@ -51,8 +51,16 @@ class QuestionScreen < PM::Screen
   def textFieldDidEndEditing(textField)
   end
 
+  def get_frame_for_swipe_view
+    view_size = self.view.frame.size
+    swipe_height = ControlVariables::SwipeBannerHeight
+    origin_y = view_size.height -  swipe_height
+    width = view_size.width
+    CGRectMake(0, origin_y, width, swipe_height)
+  end
+  
   def add_swipe_view
-    @page_label_view = UILabel.alloc.initWithFrame(CGRectMake(0, self.view.frame.size.height-ControlVariables::SwipeBannerHeight, self.view.frame.size.width, ControlVariables::SwipeBannerHeight))
+    @page_label_view = UILabel.alloc.initWithFrame(get_frame_for_swipe_view)
     @page_label_view.textAlignment = NSTextAlignmentCenter
     @page_label_view.textColor = UIColor.whiteColor
     @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
@@ -115,16 +123,25 @@ class QuestionScreen < PM::Screen
     @current_page == @questions.count-1
   end
 
-  def add_submit_button
+  def get_submit_button_frame
     button_width = ControlVariables::SubmitButtonWidth
     button_height = ControlVariables::SubmitButtonHeight
     view_size = @questions.last.frame.size
     origin  = view_size.height + ControlVariables::QuestionMargin
+    CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+  end
+
+  def get_submit_button_view    
     submit_button = UIButton.buttonWithType(UIButtonTypeCustom)
-    submit_button.frame = CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+    submit_button.frame = get_submit_button_frame
     submit_button.setTag(Tags::SubmitButtonView)
     submit_button.setTitle("Complete", forState: UIControlStateNormal)
     submit_button.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    submit_button
+  end
+
+  def add_submit_button
+    submit_button = get_submit_button_view
     @questions.last.addSubview(submit_button)
     @questions.last.reset_field_frame
     submit_button.when(UIControlEventTouchUpInside) do
@@ -151,7 +168,8 @@ class QuestionScreen < PM::Screen
     is_valid = true
     @questions.each do |field_view|
       question_id = field_view.question_id
-      answer_content = field_view.viewWithTag(Tags::FieldViewTextField).text
+      type = Question.find(:id => question_id).first.type
+      answer_content = self.send("get_answer_for_type_#{type}", field_view)
       answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content, :created_at => Time.now)
       field_view.reset_error_message if answer.valid?
       set_error_field field_view unless answer.valid?
@@ -161,6 +179,15 @@ class QuestionScreen < PM::Screen
     is_valid
   end
 
+  def get_answer_for_type_SingleLineQuestion(field_view)
+    field_view.viewWithTag(Tags::FieldViewTextField).text
+  end
+
+  def get_answer_for_type_RadioQuestion(field_view)
+    radio_question_view = field_view.viewWithTag(Tags::RadioControllerView)
+    radio_question_view.controller.radio_button_selection
+  end
+  
   def show_first_error_view
     error_page = @questions.indexOfObject(self.first_field_view_with_error)
     if @current_page != error_page

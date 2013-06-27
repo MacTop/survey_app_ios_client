@@ -52,5 +52,20 @@ describe "FieldView" do
       @field_view.min_count(['red', 'green', 'blue']).should == 3
       @field_view.min_count(['red', 'green', 'blue', 'yellow', 'indigo', 'violet']).should != 6
     end
+
+    it "should construct UILable's form the string data" do
+      data = ["content for label1", "content for label2", "content for label3"]
+      labels, table_height = @field_view.get_radio_labels_and_frame_height data
+      labels.count.should == data.count
+      labels = labels.collect{|label| label if label.class == UILabel}
+      labels.count.should == data.count
+    end
+
+    it "should return threshold height if height is greater than threshold and return actual height if it is less than that" do
+      height = @field_view.get_table_height(ControlVariables::MaximumRadioButtonTableHeight + 100)
+      height.should.be == ControlVariables::MaximumRadioButtonTableHeight
+      height = @field_view.get_table_height(ControlVariables::MaximumRadioButtonTableHeight - 100)
+      height.should.be == ControlVariables::MaximumRadioButtonTableHeight - 100
+    end
   end
 end

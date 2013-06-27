@@ -76,11 +76,30 @@ class FieldView < UIView
   def handle_RadioQuestion
     origin = get_origin_y self
     data = Question.find(:id => self.question_id).first.radio_options.to_a.collect{|option| option.content}
-    new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin,MAX_WIDTH,  min_count(data) * ControlVariables::TableRowHeightDefault)
-    @radio_buttons_controller = RadioButtons.new(data: data, frame: new_frame)
+    labels, table_height = get_radio_labels_and_frame_height data
+    new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, get_table_height(table_height))
+    @radio_buttons_controller = RadioButtons.new(data: labels, frame: new_frame)
     @radio_buttons_controller.view.frame = new_frame
     QuestionScreen.this_controller.addChildViewController(@radio_buttons_controller)
-    self.addSubview(@radio_buttons_controller.view)  
+    @radio_buttons_controller.view.setTag(Tags::RadioControllerView)
+    self.addSubview(@radio_buttons_controller.view)
+  end
+
+  def get_table_height height
+    height > ControlVariables::MaximumRadioButtonTableHeight ? ControlVariables::MaximumRadioButtonTableHeight : height 
+  end
+  
+  def get_radio_labels_and_frame_height data
+    labels = []
+    total_height = 0
+    data.each do |label_text|
+      radio_button_label = UILabel.alloc.initWithFrame(CGRectMake(44, 10, 250, 100))
+      radio_button_label.backgroundColor = ControlVariables::ScreenColor
+      set_label_dynamicity radio_button_label, label_text, Tags::RadioButtonLabel
+      total_height += radio_button_label.frame.size.height + ControlVariables::RadioCellPadding
+      labels << radio_button_label
+    end
+    return labels, total_height 
   end
 
   def min_count(data)

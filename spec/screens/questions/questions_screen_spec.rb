@@ -82,4 +82,25 @@ describe "QuestionScreen" do
     unfilled_question.viewWithTag(Tags::ErrorFieldViewLabel).text.should == I18n.t('field_view.error')
     @questions_screen.instance_variable_get(:@current_page).should == 0
   end
+
+  describe "radio button" do
+    before do
+      @questions_screen = QuestionScreen.new
+      @questions_screen.survey_id = 8
+      @questions_screen.on_load
+    end
+    
+    it "should save the response" do
+      # questions = @questions_screen.instance_variable_get(:@questions)
+      radio_buttons = @questions_screen.childViewControllers.select{|controller| controller if controller.class == RadioButtons}
+      radio_buttons.each do |radio_button|
+        radio_button.radio_button_selection = "content"
+      end
+      previous_response_count = SurveyResponse.all.count
+      previous_answers_count = Answer.all.count
+      @questions_screen.save_response
+      SurveyResponse.all.count.should > previous_response_count
+      Answer.all.count.should > previous_answers_count
+    end
+  end
 end
