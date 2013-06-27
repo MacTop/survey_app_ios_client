@@ -53,10 +53,10 @@ class QuestionScreen < PM::Screen
 
   def get_frame_for_swipe_view
     view_size = self.view.frame.size
-    origin_y = view_size.height - ControlVariables::SwipeBannerHeight
+    swipe_height = ControlVariables::SwipeBannerHeight
+    origin_y = view_size.height -  swipe_height
     width = view_size.width
-    height = ControlVariables::SwipeBannerHeight
-    CGRectMake(0, origin_y, width, height)
+    CGRectMake(0, origin_y, width, swipe_height)
   end
   
   def add_swipe_view
