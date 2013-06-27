@@ -115,16 +115,25 @@ class QuestionScreen < PM::Screen
     @current_page == @questions.count-1
   end
 
-  def add_submit_button
+  def get_submit_button_frame
     button_width = ControlVariables::SubmitButtonWidth
     button_height = ControlVariables::SubmitButtonHeight
     view_size = @questions.last.frame.size
     origin  = view_size.height + ControlVariables::QuestionMargin
+    CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+  end
+
+  def get_submit_button_view    
     submit_button = UIButton.buttonWithType(UIButtonTypeCustom)
-    submit_button.frame = CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+    submit_button.frame = get_submit_button_frame
     submit_button.setTag(Tags::SubmitButtonView)
     submit_button.setTitle("Complete", forState: UIControlStateNormal)
     submit_button.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    submit_button
+  end
+
+  def add_submit_button
+    submit_button = get_submit_button_view
     @questions.last.addSubview(submit_button)
     @questions.last.reset_field_frame
     submit_button.when(UIControlEventTouchUpInside) do
