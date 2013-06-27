@@ -13,6 +13,7 @@
     EmptyResponseMessageLabel        = 600
     RadioButtonLabel                 = 650
     RadioControllerView              = 700
+    SwipeView                        = 750
   end
   
   class ControlVariables

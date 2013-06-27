@@ -17,11 +17,15 @@ class QuestionScreen < PM::Screen
     @current_page = 0
     populate_questions
     self.view.addSubview(@questions[0])
-    add_swipe_view
+    add_swipe_view if multiple_question_exists?
     add_swipe_bindings
     add_submit_button unless @questions.empty?
   end
 
+  def multiple_question_exists?
+    Question.find(:survey_id => self.survey_id).count > 1
+  end
+  
   def add_swipe_bindings
     self.view.on_swipe(direction: :left, fingers: 1){self.swipe_left_handler}
     self.view.on_swipe(direction: :right, fingers: 1){self.swipe_right_handler}
@@ -62,6 +66,7 @@ class QuestionScreen < PM::Screen
   def add_swipe_view
     @page_label_view = UILabel.alloc.initWithFrame(get_frame_for_swipe_view)
     @page_label_view.textAlignment = NSTextAlignmentCenter
+    @page_label_view.setTag(Tags::SwipeView)
     @page_label_view.textColor = UIColor.whiteColor
     @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
     update_page_number
