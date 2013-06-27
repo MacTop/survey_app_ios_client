@@ -28,7 +28,7 @@ class QuestionScreen < PM::Screen
   end
 
   def populate_questions
-    Question.find(:survey_id => self.survey_id).each_with_index do |question, index|
+    Question.find(:survey_id => self.survey_id, :parent_id => 0).each_with_index do |question, index|
       question.content = "#{index+1}. #{question.content}"
       question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })

@@ -26,6 +26,12 @@ describe "QuestionScreen" do
   end
 =end
 
+  it "should fetch only the questions with the parent is null" do
+    Question.should_receive(:find).with({:survey_id => 5, :parent_id => 0}).and_return([])
+    @questions_screen.populate_questions
+    1.should == 1
+  end
+
   it "should include header view" do
     sub_views = @questions_screen.view.subviews.collect{|sub_view| sub_view.class.to_s}
     sub_views.should.include "HeaderView"
