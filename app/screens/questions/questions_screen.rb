@@ -51,8 +51,15 @@ class QuestionScreen < PM::Screen
   def textFieldDidEndEditing(textField)
   end
 
+  def get_frame_for_swipe_view
+    origin_y = self.view.frame.size.height-ControlVariables::SwipeBannerHeight
+    width = self.view.frame.size.width
+    height = ControlVariables::SwipeBannerHeight
+    CGRectMake(0, origin_y, width, height)
+  end
+  
   def add_swipe_view
-    @page_label_view = UILabel.alloc.initWithFrame(CGRectMake(0, self.view.frame.size.height-ControlVariables::SwipeBannerHeight, self.view.frame.size.width, ControlVariables::SwipeBannerHeight))
+    @page_label_view = UILabel.alloc.initWithFrame(get_frame_for_swipe_view)
     @page_label_view.textAlignment = NSTextAlignmentCenter
     @page_label_view.textColor = UIColor.whiteColor
     @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
