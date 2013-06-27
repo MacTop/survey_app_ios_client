@@ -136,12 +136,13 @@ class QuestionScreen < PM::Screen
     submit_button.frame = get_submit_button_frame
     submit_button.setTag(Tags::SubmitButtonView)
     submit_button.setTitle("Complete", forState: UIControlStateNormal)
-    submit_button.backgroundColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    submit_button.backgroundColor = UIColor.colorWithRed(0.007, green: 0.339, blue: 0.4377, alpha: 1)
     submit_button
   end
 
   def add_submit_button
     submit_button = get_submit_button_view
+    apply_click_highlight submit_button
     @questions.last.addSubview(submit_button)
     @questions.last.reset_field_frame
     submit_button.when(UIControlEventTouchUpInside) do

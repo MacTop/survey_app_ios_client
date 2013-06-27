@@ -37,7 +37,7 @@ class RadioButtons < PM::Screen
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier) || begin
       UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault, reuseIdentifier:@reuseIdentifier)
     end
-    cell.selectionStyle = UITableViewCellSelectionStyleNone
+    cell.setSelectionStyle(UITableViewCellSelectionStyleNone)
 
     radio_image_view = get_radio_image_view_for("RadioButton-Unselected.png")
     cell.contentView.addSubview(radio_image_view)
@@ -54,8 +54,14 @@ class RadioButtons < PM::Screen
     self.data.count
   end
 
+  def change_cell_highlight cell, label
+    change_highlight cell.contentView, {:red => 1, :green => 1, :blue => 1, :alpha =>1 }
+    change_highlight label, {:red => 1, :green => 1, :blue => 1, :alpha =>1}    
+  end
+
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
     cell = @table.cellForRowAtIndexPath(indexPath)
+    change_cell_highlight cell, @data[indexPath.row]
     cell.contentView.addSubview(@radio_image_selected_view)
     self.radio_button_selection = @data[indexPath.row].text
   end
