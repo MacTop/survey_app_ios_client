@@ -73,13 +73,22 @@ class FieldView < UIView
     self.addSubview(text_field)
   end
 
-  def handle_RadioQuestion
+  def get_radio_options
+    questions = Question.find(:id => self.question_id).first.radio_options.to_a
+    questions.collect{|option| option.content}
+  end
+
+  def get_label_and_frame
     origin = get_origin_y self
-    data = Question.find(:id => self.question_id).first.radio_options.to_a.collect{|option| option.content}
-    labels, table_height = get_radio_labels_and_frame_height data
+    labels, table_height = get_radio_labels_and_frame_height(get_radio_options)
     new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, get_table_height(table_height))
-    @radio_buttons_controller = RadioButtons.new(data: labels, frame: new_frame)
-    @radio_buttons_controller.view.frame = new_frame
+    return labels, new_frame
+  end
+  
+  def handle_RadioQuestion
+    labels, frame = get_label_and_frame
+    @radio_buttons_controller = RadioButtons.new(data: labels, frame: frame)
+    @radio_buttons_controller.view.frame = frame
     QuestionScreen.this_controller.addChildViewController(@radio_buttons_controller)
     @radio_buttons_controller.view.setTag(Tags::RadioControllerView)
     self.addSubview(@radio_buttons_controller.view)
