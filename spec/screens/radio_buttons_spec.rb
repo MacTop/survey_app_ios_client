@@ -1,8 +1,14 @@
 describe "Radio Buttons" do
   before do
-    @radio_button_labels = ['red', 'green', 'blue']
-    new_frame = CGRectMake(0,ControlVariables::QuestionMargin, 300 ,250)
-    @radio_buttons = RadioButtons.new(data: ['red','green','blue'], frame: new_frame)
+    @radio_button_label1 = UILabel.alloc.initWithFrame(CGRectMake(44, 10, 250, 100))
+    @radio_button_label2 = UILabel.alloc.initWithFrame(CGRectMake(44, 10, 250, 100))
+    @radio_button_label3 = UILabel.alloc.initWithFrame(CGRectMake(44, 10, 250, 100))
+    @radio_button_labels = [@radio_button_label1, @radio_button_label2, @radio_button_label3]
+    @radio_button_labels.each_with_index do |label, index|
+      label.text = "Radio option#{index}"
+    end
+    new_frame = CGRectMake(0,ControlVariables::QuestionMargin, 300 ,200)
+    @radio_buttons = RadioButtons.new(data: @radio_button_labels, frame: new_frame)
     @radio_buttons.viewDidLoad
   end
   
@@ -21,11 +27,19 @@ describe "Radio Buttons" do
   end
 
   it "should add/remove scroll based on the data count" do
-    @radio_buttons.should.receive(:configure_table)
-    @radio_buttons.data = ['asd', 'qwe']
+    @radio_buttons.should.receive(:remove_table_scroll)
     @radio_buttons.viewDidLoad
-    @radio_buttons.should.not.receive(:configure_table)
-    @radio_buttons.data = ['asd', 'qwe', 'wer', 'ert', 'tyu', 'tyu', 'dfg']
+    @radio_buttons.frame.size.stub!(:height).and_return(ControlVariables::MaximumRadioButtonTableHeight)
+    @radio_buttons.should.not.receive(:remove_table_scroll)
     @radio_buttons.viewDidLoad
+  end
+
+  it "should return the selected radio button option" do
+    table = @radio_buttons.instance_variable_get('@table')
+    table.reloadData
+    indexpath =  NSIndexPath.indexPathForRow(0, inSection: 0)
+    @radio_buttons.tableView(table, didSelectRowAtIndexPath: indexpath).should ==  @radio_button_label1.text
+    indexpath =  NSIndexPath.indexPathForRow(1, inSection: 0)
+     @radio_buttons.tableView(table, didSelectRowAtIndexPath: indexpath).should.not ==  @radio_button_label1.text
   end
 end

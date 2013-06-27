@@ -151,7 +151,8 @@ class QuestionScreen < PM::Screen
     is_valid = true
     @questions.each do |field_view|
       question_id = field_view.question_id
-      answer_content = field_view.viewWithTag(Tags::FieldViewTextField).text
+      type = Question.find(:id => question_id).first.type
+      answer_content = self.send("get_answer_for_type_#{type}", field_view)
       answer = Answer.new(:question_id => question_id, :response_id => survey_response.key, :content => answer_content, :created_at => Time.now)
       field_view.reset_error_message if answer.valid?
       set_error_field field_view unless answer.valid?
@@ -161,6 +162,15 @@ class QuestionScreen < PM::Screen
     is_valid
   end
 
+  def get_answer_for_type_SingleLineQuestion(field_view)
+    field_view.viewWithTag(Tags::FieldViewTextField).text
+  end
+
+  def get_answer_for_type_RadioQuestion(field_view)
+    radio_question_view = field_view.viewWithTag(Tags::RadioControllerView)
+    radio_question_view.controller.radio_button_selection
+  end
+  
   def show_first_error_view
     error_page = @questions.indexOfObject(self.first_field_view_with_error)
     if @current_page != error_page

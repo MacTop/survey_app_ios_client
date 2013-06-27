@@ -30,7 +30,7 @@ class ResponseListScreen < PM::Screen
 
   def add_complete_response_title
     field_label = UILabel.alloc.initWithFrame(CGRectMake(10, 0, 300, 30))
-    field_label.text = "Complete Response"
+    field_label.text = I18n.t('response.completed_responses')
     field_label.textColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
     field_label.backgroundColor =  UIColor.clearColor
     field_label.textAlignment = NSTextAlignmentCenter
