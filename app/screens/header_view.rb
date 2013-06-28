@@ -24,7 +24,7 @@ class HeaderView < UIView
   def add_logo
     image = UIImage.imageNamed('logo.png')
     imageView = UIImageView.alloc.initWithImage(image)
-    imageView.frame = CGRectMake(80, 0, ControlVariables::LogoWidth, ControlVariables::LogoWidth)
+    imageView.frame = CGRectMake(80, ControlVariables::HeaderLogoMarginTop, ControlVariables::LogoWidth, ControlVariables::LogoWidth)
     self.addSubview(imageView)
   end
 
@@ -32,7 +32,7 @@ class HeaderView < UIView
     label_view = add_dynamic_label(args[:title], 15)
     new_frame = label_view.frame
     new_frame.origin.x = 125
-    new_frame.origin.y = 10
+    new_frame.origin.y = ControlVariables::HeaderLabelMarginTop
     label_view.frame = new_frame
     self.addSubview(label_view)
   end
@@ -48,8 +48,8 @@ class HeaderView < UIView
     if(self.back_button_needed?)
       back_button = UIButton.buttonWithType(UIButtonTypeCustom)
       back_button.setTitle("Back", forState:UIControlStateNormal)
-      back_button.layer.cornerRadius = 5
-      # back_button.setImage(UIImage.imageNamed("logo.png"), forState:UIControlStateNormal)
+      apply_border_radius(back_button, 5)
+      apply_click_highlight(back_button)
       back_button.setTintColor(UIColor.blackColor)
       subview(back_button,:back_button)
       self.addSubview(back_button)

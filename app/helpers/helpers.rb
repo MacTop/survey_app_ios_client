@@ -58,4 +58,32 @@ module Helpers
     new_frame.size.height = total_view_height + extra_height
     self.frame = new_frame
   end
+
+  def get_image_from_color color
+    rect = CGRectMake(0, 0, 1, 1)
+    UIGraphicsBeginImageContext(rect.size)
+    context = UIGraphicsGetCurrentContext()
+    CGContextSetFillColorWithColor(context, getColor(color).CGColor)
+    CGContextFillRect(context, rect)
+    background_image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    background_image
+  end
+
+  def apply_border_radius view, radius
+    view.layer.cornerRadius = radius
+    view.layer.masksToBounds = true
+  end
+
+  def change_highlight(view, highlight_color)
+    default_color = view.backgroundColor
+    view.backgroundColor = getColor(highlight_color)
+    gcd_queue = Dispatch::Queue.main
+    gcd_queue.after(0.2){ view.backgroundColor = default_color}
+  end
+
+  def apply_click_highlight button
+    color = {:red => 0.127, :green => 0.459, :blue => 0.557, :alpha => 0.6}
+    button.setBackgroundImage(get_image_from_color(color), forState: UIControlStateHighlighted)
+  end
 end

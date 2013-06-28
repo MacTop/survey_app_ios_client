@@ -53,6 +53,21 @@ describe "QuestionScreen" do
     questions.last.viewWithTag(Tags::SubmitButtonView).sendActionsForControlEvents(UIControlEventTouchUpInside)
   end
 
+  it "should have atleast one instance of swipe view" do
+    @questions_screen.view.viewWithTag(Tags::SwipeView).should.not.be.nil
+  end
+
+  it "should return true if there are more than one question exists" do
+    @questions_screen.multiple_question_exists?.should == true
+  end
+
+  it "should not have any instances of swipe view if only have 1 question" do
+    @questions_screen.stub!(:multiple_question_exists?).and_return(false)
+    @questions_screen.view = UIView.alloc.init
+    @questions_screen.on_load
+    @questions_screen.view.viewWithTag(Tags::SwipeView).should.be.nil
+  end
+
   it "should save the response" do
     @questions_screen.stub!(:navigation_controller).and_return(UINavigationController.new)
     questions = @questions_screen.instance_variable_get(:@questions)

@@ -30,14 +30,14 @@ Teacup::Stylesheet.new :main do
     textColor: UIColor.whiteColor
 
   style :back_button,
-  backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
-  frame: [[5,5],[60,30]],
-  font: UIFont.systemFontOfSize(14)
+    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
+    frame: [[5, 5],[60, 38]],
+    font: UIFont.systemFontOfSize(14)
 
   style :radio_buttons_table
-  bounces = false
-  scrollEnabled = false
-  showsVerticalScrollIndicator = false
+    bounces = false
+    scrollEnabled = false
+    showsVerticalScrollIndicator = false
 
   style :response_table,
     backgroundColor: ControlVariables::ScreenColor

@@ -1,5 +1,5 @@
 class SurveyListItemTemplate < UIView
-  attr_accessor :survey_id
+  attr_accessor :survey_id, :response_nav_label
   include Helpers
 
   MAX_WIDTH = 300
@@ -44,12 +44,15 @@ class SurveyListItemTemplate < UIView
   end
   
   def add_response_navigation_view
-    response_navigation_label = UILabel.alloc.initWithFrame(CGRectMake(frame.size.width-RESPONSE_NAVIGATION_WIDTH, 0, RESPONSE_NAVIGATION_WIDTH, frame.size.height))
-    response_navigation_label.text = "+"
-    response_navigation_label.setTag Tags::ResponseNavigationLabel
-    subview(response_navigation_label,:response_navigation_label)
-    response_navigation_label.userInteractionEnabled = true
-    response_navigation_label.on_tap { self.superview.controller.show_questions_screen_for self.survey_id}
-    self.addSubview(response_navigation_label)
+    @response_navigation_label = UILabel.alloc.initWithFrame(CGRectMake(frame.size.width-RESPONSE_NAVIGATION_WIDTH, 0, RESPONSE_NAVIGATION_WIDTH, frame.size.height))
+    @response_navigation_label.text = "+"
+    @response_navigation_label.setTag Tags::ResponseNavigationLabel
+    subview(@response_navigation_label,:response_navigation_label)
+    @response_navigation_label.userInteractionEnabled = true
+    @response_navigation_label.on_tap do
+      color = {:red => 0.027, :green => 0.459, :blue => 0.557, :alpha => 0.5}
+      change_highlight @response_navigation_label, color
+      self.superview.controller.show_questions_screen_for self.survey_id
+    end
   end
 end
