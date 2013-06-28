@@ -191,7 +191,7 @@ class QuestionScreen < PM::Screen
 
   def get_answer_for_type_RadioQuestion(field_view)
     radio_question_view = field_view.viewWithTag(Tags::RadioControllerView)
-    radio_question_view.controller.radio_button_selection
+    radio_question_view.radio_button_selection
   end
   
   def show_first_error_view

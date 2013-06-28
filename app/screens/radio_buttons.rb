@@ -1,9 +1,11 @@
-class RadioButtons < PM::Screen
-  attr_accessor :data, :frame, :radio_button_selection
+class RadioButtons < UIView #PM::Screen
+  attr_accessor :data, :radio_button_selection
   include Helpers
   
-  def viewDidLoad
-    @table = UITableView.alloc.initWithFrame CGRectMake(0,0, frame.size.width, frame.size.height)
+  def initialize(args = {})
+    self.data = args[:data]
+    self.initWithFrame(CGRectMake(0,0, args[:frame].size.width, args[:frame].size.height))
+    @table = UITableView.alloc.initWithFrame CGRectMake(0,0, args[:frame].size.width, args[:frame].size.height)
     @table.backgroundColor = ControlVariables::ScreenColor
     @table.setSeparatorStyle(UITableViewCellSeparatorStyleNone)
     subview(@table, :radio_buttons_table)

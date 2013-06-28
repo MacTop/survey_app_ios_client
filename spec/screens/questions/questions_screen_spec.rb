@@ -106,8 +106,9 @@ describe "QuestionScreen" do
     end
     
     it "should save the response" do
-      # questions = @questions_screen.instance_variable_get(:@questions)
-      radio_buttons = @questions_screen.childViewControllers.select{|controller| controller if controller.class == RadioButtons}
+      questions = @questions_screen.instance_variable_get(:@questions)
+      radio_buttons = questions.collect {|subview| subview.viewWithTag(Tags::RadioControllerView) if subview.class == FieldView}
+      radio_buttons.compact!
       radio_buttons.each do |radio_button|
         radio_button.radio_button_selection = "content"
       end

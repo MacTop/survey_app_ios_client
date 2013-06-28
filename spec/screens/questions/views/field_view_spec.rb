@@ -43,8 +43,7 @@ describe "FieldView" do
     end
 
     it "should have radiobuttons if the type is RadioQuestion" do
-      puts @field_view.subviews
-      radio_button_views = @field_view.subviews.select{|subview| subview if subview.controller.class == RadioButtons}
+      radio_button_views = @field_view.subviews.select{|subview| subview.class == RadioButtons}
       radio_button_views.size.should == 1
     end
 

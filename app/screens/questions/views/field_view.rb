@@ -87,11 +87,10 @@ class FieldView < UIView
   
   def handle_RadioQuestion
     labels, frame = get_label_and_frame
-    @radio_buttons_controller = RadioButtons.new(data: labels, frame: frame)
-    @radio_buttons_controller.view.frame = frame
-    QuestionScreen.this_controller.addChildViewController(@radio_buttons_controller)
-    @radio_buttons_controller.view.setTag(Tags::RadioControllerView)
-    self.addSubview(@radio_buttons_controller.view)
+    @radio_buttons_view = RadioButtons.new({:data => labels, :frame => frame})
+    @radio_buttons_view.frame = frame
+    @radio_buttons_view.setTag(Tags::RadioControllerView)
+    self.addSubview(@radio_buttons_view)
   end
 
   def get_table_height height
