@@ -4,6 +4,10 @@ class SurveyListItemView < SurveyListItemTemplate
     super
     self.userInteractionEnabled = true
     add_response_list_navigation
+    puts self.class
+    color = {:red => 0.8, :green => 0.8, :blue => 0.8, :alpha => 1}
+    apply_border_radius self, 2
+    apply_box_shadow_to(self, color, 1, 0, CGSizeMake(-2,2), true)
   end
 
    def add_response_list_navigation

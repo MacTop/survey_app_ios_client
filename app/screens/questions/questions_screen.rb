@@ -67,8 +67,8 @@ class QuestionScreen < PM::Screen
     @page_label_view = UILabel.alloc.initWithFrame(get_frame_for_swipe_view)
     @page_label_view.textAlignment = NSTextAlignmentCenter
     @page_label_view.setTag(Tags::SwipeView)
-    @page_label_view.textColor = UIColor.whiteColor
-    @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
+    @page_label_view.textColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    @page_label_view.backgroundColor = UIColor.colorWithRed(0.812, green: 0.812, blue: 0.812, alpha:1)
     update_page_number
     self.view.addSubview(@page_label_view)
   end

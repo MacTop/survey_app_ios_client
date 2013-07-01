@@ -30,8 +30,8 @@ Teacup::Stylesheet.new :main do
     textColor: UIColor.whiteColor
 
   style :back_button,
-    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
-    frame: [[5, 5],[60, 38]],
+    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 0),
+    frame: [[5, 7],[60, 35]],
     font: UIFont.systemFontOfSize(14)
 
   style :radio_buttons_table

@@ -48,6 +48,7 @@ class SurveyListItemTemplate < UIView
     @response_navigation_label.text = "+"
     @response_navigation_label.setTag Tags::ResponseNavigationLabel
     subview(@response_navigation_label,:response_navigation_label)
+    apply_corner_right_radii_to(@response_navigation_label, 2)
     @response_navigation_label.userInteractionEnabled = true
     @response_navigation_label.on_tap do
       color = {:red => 0.027, :green => 0.459, :blue => 0.557, :alpha => 0.5}
