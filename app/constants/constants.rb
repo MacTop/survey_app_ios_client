@@ -14,6 +14,8 @@
     RadioButtonLabel                 = 650
     RadioControllerView              = 700
     SwipeView                        = 750
+    CheckBoxControllerView           = 800
+    CheckedImageView                 = 850
   end
   
   class ControlVariables

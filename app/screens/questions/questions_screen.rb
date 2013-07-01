@@ -194,6 +194,12 @@ class QuestionScreen < PM::Screen
     radio_question_view.controller.radio_button_selection
   end
   
+  def get_answer_for_type_MultiChoiceQuestion(field_view)
+    check_box_view = field_view.viewWithTag(Tags::CheckBoxControllerView)
+    answers = check_box_view.controller.check_box_selection
+    answers.join(", ")
+  end
+  
   def show_first_error_view
     error_page = @questions.indexOfObject(self.first_field_view_with_error)
     if @current_page != error_page

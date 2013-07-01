@@ -80,9 +80,9 @@ class FieldView < UIView
 
   def get_label_and_frame
     origin = get_origin_y self
-    labels, table_height = get_radio_labels_and_frame_height(get_radio_options)
+    labels, table_height = get_labels_and_frame_height(get_radio_options)
     new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, get_table_height(table_height))
-    return labels, new_frame
+    [labels, new_frame]
   end
   
   def handle_RadioQuestion
@@ -94,11 +94,20 @@ class FieldView < UIView
     self.addSubview(@radio_buttons_controller.view)
   end
 
+  def handle_MultiChoiceQuestion
+    labels, frame = get_label_and_frame
+    @check_boxes_controller = CheckBoxes.new(data: labels, frame: frame)
+    @check_boxes_controller.view.frame = frame
+    QuestionScreen.this_controller.addChildViewController(@check_boxes_controller)
+    @check_boxes_controller.view.setTag(Tags::CheckBoxControllerView)
+    self.addSubview(@check_boxes_controller.view)
+  end
+
   def get_table_height height
     height > ControlVariables::MaximumRadioButtonTableHeight ? ControlVariables::MaximumRadioButtonTableHeight : height 
   end
   
-  def get_radio_labels_and_frame_height data
+  def get_labels_and_frame_height data
     labels = []
     total_height = 0
     data.each do |label_text|
@@ -108,7 +117,7 @@ class FieldView < UIView
       total_height += radio_button_label.frame.size.height + ControlVariables::RadioCellPadding
       labels << radio_button_label
     end
-    return labels, total_height 
+    [labels, total_height] 
   end
 
   def min_count(data)

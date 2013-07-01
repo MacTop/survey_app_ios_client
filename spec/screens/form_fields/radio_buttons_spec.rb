@@ -12,26 +12,12 @@ describe "Radio Buttons" do
     @radio_buttons.viewDidLoad
   end
   
-  it "should have a instance of TableView" do
-    sub_views = @radio_buttons.view.subviews.collect{|sub_view| sub_view.class}
-    sub_views.should.include UITableView
-    @radio_buttons.instance_variable_get(:@data).should == @radio_button_labels  
-  end
-
   it "should have image view and label view in the table cell" do
     table = @radio_buttons.instance_variable_get('@table')
     table.reloadData
     cell_subviews = table.visibleCells.first.contentView.subviews.collect{|sub_view| sub_view.class}
     cell_subviews.should.include UIImageView
     cell_subviews.should.include UILabel
-  end
-
-  it "should add/remove scroll based on the data count" do
-    @radio_buttons.should.receive(:remove_table_scroll)
-    @radio_buttons.viewDidLoad
-    @radio_buttons.frame.size.stub!(:height).and_return(ControlVariables::MaximumRadioButtonTableHeight)
-    @radio_buttons.should.not.receive(:remove_table_scroll)
-    @radio_buttons.viewDidLoad
   end
 
   it "should return the selected radio button option" do
