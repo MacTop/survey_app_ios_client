@@ -20,10 +20,10 @@ class CheckBoxes < SelectionField
     end
     cell.setSelectionStyle(UITableViewCellSelectionStyleNone)
 
-    cell.contentView.addSubview(checkbox_image_for_cell("unchecked-checkbox.png", 1))
-    checked_image = checkbox_image_for_cell("checked-checkbox.png", 0)
+    cell.contentView.addSubview(checkbox_image_for_cell("unchecked-checkbox.png", 1)) if cell.contentView.subviews.empty?
+    checked_image = checkbox_image_for_cell("checked-checkbox.png", 0) 
     checked_image.setTag(Tags::CheckedImageView)
-    cell.contentView.addSubview(checked_image)
+    cell.contentView.addSubview(checked_image) if cell.contentView.subviews.size < 2
     cell.contentView.addSubview(@data[indexPath.row])
     cell     
   end

@@ -42,8 +42,8 @@ class SelectionField < PM::Screen
   end
 
   def change_cell_highlight cell, label
-    change_highlight cell.contentView, {:red => 1, :green => 1, :blue => 1, :alpha =>1 }
-    change_highlight label, {:red => 1, :green => 1, :blue => 1, :alpha =>1}    
+    change_highlight cell.contentView, {:red => 1, :green => 1, :blue => 0.8, :alpha =>1 }
+    change_highlight label, {:red => 1, :green => 1, :blue => 0.8, :alpha =>1}    
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
