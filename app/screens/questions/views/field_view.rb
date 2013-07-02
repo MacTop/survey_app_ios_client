@@ -73,8 +73,12 @@ class FieldView < UIView
     self.addSubview(text_field)
   end
 
+  def get_radio_option_models
+    Question.find(:id => self.question_id).first.radio_options.to_a
+  end
+  
   def get_radio_options
-    questions = Question.find(:id => self.question_id).first.radio_options.to_a
+    questions = get_radio_option_models
     questions.collect{|option| option.content}
   end
 
@@ -87,7 +91,7 @@ class FieldView < UIView
   
   def handle_RadioQuestion
     labels, frame = get_label_and_frame
-    @radio_buttons_view = RadioButtons.new({:data => labels, :frame => frame})
+    @radio_buttons_view = RadioButtons.new({:data => labels, :frame => frame, :radio_options => get_radio_option_models})
     @radio_buttons_view.frame = frame
     @radio_buttons_view.setTag(Tags::RadioControllerView)
     self.addSubview(@radio_buttons_view)

@@ -33,4 +33,5 @@
     RadioButtonsMaxCount             = 5
     RadioCellPadding                 = 25
     MaximumRadioButtonTableHeight    = 240
+    TableHeightMargin                = 50
   end
