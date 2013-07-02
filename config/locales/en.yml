@@ -12,5 +12,7 @@ en:
     success: "Survey response saved successfully!"
     empty_message: "You currently don't have any responses, Click the + button to add a response."
     completed_responses: "Completed Responses"
+  response_view_screen:
+    title: "Response Details"
   field_view:
     error: "This question is mandatory"

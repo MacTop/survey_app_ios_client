@@ -16,6 +16,7 @@
     SwipeView                        = 750
     CheckBoxesControllerView         = 800
     CheckedImageView                 = 850
+    ResponseLabels                   = 950
   end
   
   class ControlVariables

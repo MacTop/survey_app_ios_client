@@ -42,6 +42,15 @@ Teacup::Stylesheet.new :main do
   style :response_table,
     backgroundColor: ControlVariables::ScreenColor
 
+  style :question_label,
+  backgroundColor: ControlVariables::ScreenColor
+
+  style :answer_label,
+  backgroundColor: ControlVariables::ScreenColor
+
+  style :separator_label,
+  backgroundColor: UIColor.whiteColor
+  
   style :response_container_view,
     origin: [8,7],
     size: [284, 86],
@@ -52,6 +61,5 @@ Teacup::Stylesheet.new :main do
     textColor: @survey_item_text_color
 
   style :complete_response_header,
-    font: @respone_label_font,
     textColor: @survey_item_text_color
 end
