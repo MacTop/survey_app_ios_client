@@ -190,12 +190,12 @@ class QuestionScreen < PM::Screen
   end
 
   def get_answer_for_type_RadioQuestion(field_view)
-    radio_question_view = field_view.viewWithTag(Tags::RadioControllerView)
+    radio_question_view = field_view.viewWithTag(Tags::RadioButtonsControllerView)
     radio_question_view.controller.radio_button_selection
   end
   
   def get_answer_for_type_MultiChoiceQuestion(field_view)
-    check_box_view = field_view.viewWithTag(Tags::CheckBoxControllerView)
+    check_box_view = field_view.viewWithTag(Tags::CheckBoxesControllerView)
     answers = check_box_view.controller.check_box_selection
     answers.join(", ")
   end

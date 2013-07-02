@@ -134,7 +134,7 @@ describe "QuestionScreen" do
 
     it "should join the selction for saving the answer" do
       field_view = @questions_screen.instance_variable_get(:@questions).first
-      controller = field_view.viewWithTag(Tags::CheckBoxControllerView).controller
+      controller = field_view.viewWithTag(Tags::CheckBoxesControllerView).controller
       controller.stub!(:check_box_selection).and_return(["asd", "wer"])
       @questions_screen.get_answer_for_type_MultiChoiceQuestion(field_view).should == "asd, wer"
     end

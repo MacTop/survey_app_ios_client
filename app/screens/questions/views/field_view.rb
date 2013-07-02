@@ -86,21 +86,20 @@ class FieldView < UIView
   end
   
   def handle_RadioQuestion
-    labels, frame = get_label_and_frame
-    @radio_buttons_controller = RadioButtons.new(data: labels, frame: frame)
-    @radio_buttons_controller.view.frame = frame
-    QuestionScreen.this_controller.addChildViewController(@radio_buttons_controller)
-    @radio_buttons_controller.view.setTag(Tags::RadioControllerView)
-    self.addSubview(@radio_buttons_controller.view)
+    handle_multiple_choice RadioButtons
   end
 
   def handle_MultiChoiceQuestion
+    handle_multiple_choice CheckBoxes
+  end
+
+  def handle_multiple_choice controller
     labels, frame = get_label_and_frame
-    @check_boxes_controller = CheckBoxes.new(data: labels, frame: frame)
-    @check_boxes_controller.view.frame = frame
-    QuestionScreen.this_controller.addChildViewController(@check_boxes_controller)
-    @check_boxes_controller.view.setTag(Tags::CheckBoxControllerView)
-    self.addSubview(@check_boxes_controller.view)
+    @view_controller = controller.new(data: labels, frame: frame)
+    @view_controller.view.frame = frame
+    QuestionScreen.this_controller.addChildViewController(@view_controller)
+    @view_controller.view.setTag(Tags.const_get("#{controller.to_s}ControllerView"))
+    self.addSubview(@view_controller.view)
   end
 
   def get_table_height height
