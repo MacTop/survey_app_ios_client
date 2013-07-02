@@ -6,9 +6,10 @@ class ResponseDetails < UIView
     self.initWithFrame CGRectMake(0,0,320,100)
     question = Question.find(:id => answer.question_id).first
     subview(get_label(question.content, CGRectMake(10, 10, 300, 30), 18), :question_label)
-    subview(get_label(answer.content, CGRectMake(10, 30, 300, 30), 14), :answer_label)
     origin_y = get_origin_y self
-    subview(UILabel.alloc.initWithFrame(CGRectMake(0, origin_y+10, 320, 3)), :separator_label)
+    subview(get_label(answer.content, CGRectMake(10, origin_y , 300, 30), 14), :answer_label)
+    origin_y = get_origin_y self
+    subview(UILabel.alloc.initWithFrame(CGRectMake(0, origin_y + 10, 320, 3)), :separator_label)
     self.reset_field_frame
   end
 
