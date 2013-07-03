@@ -67,8 +67,8 @@ class QuestionScreen < PM::Screen
     @page_label_view = UILabel.alloc.initWithFrame(get_frame_for_swipe_view)
     @page_label_view.textAlignment = NSTextAlignmentCenter
     @page_label_view.setTag(Tags::SwipeView)
-    @page_label_view.textColor = UIColor.whiteColor
-    @page_label_view.backgroundColor = UIColor.colorWithRed(0.5, green:0.5, blue:0.5, alpha:1)
+    @page_label_view.textColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
+    @page_label_view.backgroundColor = UIColor.colorWithRed(0.812, green: 0.812, blue: 0.812, alpha:1)
     update_page_number
     self.view.addSubview(@page_label_view)
   end
@@ -190,8 +190,14 @@ class QuestionScreen < PM::Screen
   end
 
   def get_answer_for_type_RadioQuestion(field_view)
-    radio_question_view = field_view.viewWithTag(Tags::RadioControllerView)
+    radio_question_view = field_view.viewWithTag(Tags::RadioButtonsControllerView)
     radio_question_view.radio_button_selection
+  end
+  
+  def get_answer_for_type_MultiChoiceQuestion(field_view)
+    check_box_view = field_view.viewWithTag(Tags::CheckBoxesControllerView)
+    answers = check_box_view.check_box_selection
+    answers.join(", ")
   end
   
   def show_first_error_view

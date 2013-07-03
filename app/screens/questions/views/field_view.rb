@@ -65,7 +65,7 @@ class FieldView < UIView
   def handle_SingleLineQuestion
     origin = get_origin_y self
     text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, 30))
-    text_field.delegate = QuestionScreen.this_controller
+    text_field.delegate = self.controller
     text_field.backgroundColor = UIColor.whiteColor
     text_field.setTag Tags::FieldViewTextField
     text_field.contentVerticalAlignment = 0
@@ -84,24 +84,32 @@ class FieldView < UIView
 
   def get_label_and_frame
     origin = get_origin_y self
-    labels, table_height = get_radio_labels_and_frame_height(get_radio_options)
+    labels, table_height = get_labels_and_frame_height(get_radio_options)
     new_frame = CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, get_table_height(table_height))
-    return labels, new_frame
+    [labels, new_frame]
   end
   
   def handle_RadioQuestion
+    handle_multiple_choice RadioButtons
+  end
+
+  def handle_MultiChoiceQuestion
+    handle_multiple_choice CheckBoxes
+  end
+
+  def handle_multiple_choice controller
     labels, frame = get_label_and_frame
-    @radio_buttons_view = RadioButtons.new({:data => labels, :frame => frame, :radio_options => get_radio_option_models})
-    @radio_buttons_view.frame = frame
-    @radio_buttons_view.setTag(Tags::RadioControllerView)
-    self.addSubview(@radio_buttons_view)
+    @view_controller = controller.new({data: labels, frame: frame, :radio_options => get_radio_option_models})
+    @view_controller.frame = frame
+    @view_controller.setTag(Tags.const_get("#{controller.to_s}ControllerView"))
+    self.addSubview(@view_controller)
   end
 
   def get_table_height height
     height > ControlVariables::MaximumRadioButtonTableHeight ? ControlVariables::MaximumRadioButtonTableHeight : height 
   end
   
-  def get_radio_labels_and_frame_height data
+  def get_labels_and_frame_height data
     labels = []
     total_height = 0
     data.each do |label_text|
@@ -111,7 +119,7 @@ class FieldView < UIView
       total_height += radio_button_label.frame.size.height + ControlVariables::RadioCellPadding
       labels << radio_button_label
     end
-    return labels, total_height 
+    [labels, total_height] 
   end
 
   def min_count(data)

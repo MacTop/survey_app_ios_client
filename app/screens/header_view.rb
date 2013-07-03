@@ -47,10 +47,12 @@ class HeaderView < UIView
   def add_back_button_if_needed
     if(self.back_button_needed?)
       back_button = UIButton.buttonWithType(UIButtonTypeCustom)
-      back_button.setTitle("Back", forState:UIControlStateNormal)
-      apply_border_radius(back_button, 5)
-      apply_click_highlight(back_button)
-      back_button.setTintColor(UIColor.blackColor)
+      back_button.setTitle("", forState:UIControlStateNormal)
+      
+      # apply_border_radius(back_button, 5)
+      # apply_click_highlight(back_button)
+      back_button.setBackgroundImage(UIImage.imageNamed("backbutton-normal.png"), forState: UIControlStateNormal)
+      back_button.setBackgroundImage(UIImage.imageNamed("backbutton-highlighted.png"), forState: UIControlStateHighlighted)
       subview(back_button,:back_button)
       self.addSubview(back_button)
       back_button.on_tap { back_to_previous_screen }

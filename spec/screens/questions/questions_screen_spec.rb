@@ -107,7 +107,7 @@ describe "QuestionScreen" do
     
     it "should save the response" do
       questions = @questions_screen.instance_variable_get(:@questions)
-      radio_buttons = questions.collect {|subview| subview.viewWithTag(Tags::RadioControllerView) if subview.class == FieldView}
+      radio_buttons = questions.collect {|subview| subview.viewWithTag(Tags::RadioButtonsControllerView) if subview.class == FieldView}
       radio_buttons.compact!
       radio_buttons.each do |radio_button|
         radio_button.radio_button_selection = "content"
@@ -117,6 +117,33 @@ describe "QuestionScreen" do
       @questions_screen.save_response
       SurveyResponse.all.count.should > previous_response_count
       Answer.all.count.should > previous_answers_count
+    end
+  end
+
+  describe "Check box" do
+    before do
+      @questions_screen = QuestionScreen.new
+      @questions_screen.survey_id = 3
+      @questions_screen.on_load
+    end
+    
+    it "should save the response" do
+      check_boxes = @questions_screen.childViewControllers.select{|controller| controller if controller.class == CheckBoxes}
+      check_boxes.each do |check_box|
+        check_box.check_box_selection = ["content"]
+      end
+      previous_response_count = SurveyResponse.all.count
+      previous_answers_count = Answer.all.count
+      @questions_screen.save_response
+      SurveyResponse.all.count.should > previous_response_count
+      Answer.all.count.should > previous_answers_count
+    end
+
+    it "should join the selction for saving the answer" do
+      field_view = @questions_screen.instance_variable_get(:@questions).first
+      controller = field_view.viewWithTag(Tags::CheckBoxesControllerView)
+      controller.stub!(:check_box_selection).and_return(["asd", "wer"])
+      @questions_screen.get_answer_for_type_MultiChoiceQuestion(field_view).should == "asd, wer"
     end
   end
 end

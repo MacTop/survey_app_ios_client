@@ -30,8 +30,8 @@ Teacup::Stylesheet.new :main do
     textColor: UIColor.whiteColor
 
   style :back_button,
-    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 1),
-    frame: [[5, 5],[60, 38]],
+    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 0),
+    frame: [[5, 7],[60, 35]],
     font: UIFont.systemFontOfSize(14)
 
   style :radio_buttons_table
@@ -42,6 +42,15 @@ Teacup::Stylesheet.new :main do
   style :response_table,
     backgroundColor: ControlVariables::ScreenColor
 
+  style :question_label,
+  backgroundColor: ControlVariables::ScreenColor
+
+  style :answer_label,
+  backgroundColor: ControlVariables::ScreenColor
+
+  style :separator_label,
+  backgroundColor: UIColor.whiteColor
+  
   style :response_container_view,
     origin: [8,7],
     size: [284, 86],
@@ -52,6 +61,5 @@ Teacup::Stylesheet.new :main do
     textColor: @survey_item_text_color
 
   style :complete_response_header,
-    font: @respone_label_font,
     textColor: @survey_item_text_color
 end

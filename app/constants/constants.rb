@@ -12,8 +12,11 @@
     ResponseQuestionAnswerLabel      = 550
     EmptyResponseMessageLabel        = 600
     RadioButtonLabel                 = 650
-    RadioControllerView              = 700
+    RadioButtonsControllerView       = 700
     SwipeView                        = 750
+    CheckBoxesControllerView         = 800
+    CheckedImageView                 = 850
+    ResponseLabels                   = 950
   end
   
   class ControlVariables

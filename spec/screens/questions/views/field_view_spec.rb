@@ -30,9 +30,6 @@ describe "FieldView" do
       @field_view.viewWithTag(Tags::FieldViewTextField).should.not.be.nil
     end
 
-    it "should have delegate container controller" do
-      @field_view.viewWithTag(Tags::FieldViewTextField).delegate.class.should == QuestionScreen
-    end
   end
 
   describe "radio" do
@@ -54,7 +51,7 @@ describe "FieldView" do
 
     it "should construct UILable's form the string data" do
       data = ["content for label1", "content for label2", "content for label3"]
-      labels, table_height = @field_view.get_radio_labels_and_frame_height data
+      labels, table_height = @field_view.get_labels_and_frame_height data
       labels.count.should == data.count
       labels = labels.collect{|label| label if label.class == UILabel}
       labels.count.should == data.count
@@ -65,6 +62,25 @@ describe "FieldView" do
       height.should.be == ControlVariables::MaximumRadioButtonTableHeight
       height = @field_view.get_table_height(ControlVariables::MaximumRadioButtonTableHeight - 100)
       height.should.be == ControlVariables::MaximumRadioButtonTableHeight - 100
+    end
+  end
+
+  describe "check box" do
+    before do
+      @question = Question.find(:id => 32).first
+      @args = {:question => @question, :origin_y => 10}
+      @field_view = FieldView.new(@args)
+    end
+
+    it "should have check boxes if the type is MultiChoiceQuestion" do
+      check_box_views = @field_view.subviews.select{|subview| subview if subview.class == CheckBoxes}
+      check_box_views.size.should == 1
+    end
+
+    it "should add checkboxes with proper style" do
+      @field_view.should_receive(:get_label_and_frame).and_return([["hi"], CGRectMake(10,10,10,10)])
+      @field_view.handle_MultiChoiceQuestion
+      1.should == 1
     end
   end
 end

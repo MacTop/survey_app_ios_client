@@ -1,4 +1,5 @@
 class ResponseListItemTemplate < UIView
+  attr_accessor :response
   include Helpers
 
   MAX_WIDTH = 300
@@ -11,24 +12,27 @@ class ResponseListItemTemplate < UIView
   end
 
   def initialize(args = {})
+    self.response = args[:survey_response]
     self.initWithFrame CGRectMake(MARGIN, 0, MAX_WIDTH, 30)
     self.backgroundColor = UIColor.whiteColor
-    subview(set_question_answer_label(args), :response_question_label)
+    subview(set_question_answer_label, :response_question_label)
     reset_field_frame 10
     self
   end
 
-  def set_question_answer_label args
-    answer = get_newest_answer_first(args)
+  def set_question_answer_label
+    answer = get_newest_answer_first
     question = Question.find(:id => answer.question_id).first
     question_answer_text = "#{question.content}: #{answer.content}"
     question_answer_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, 10, MAX_WIDTH - (2*MARGIN), 40))
+    question_answer_label.backgroundColor = UIColor.clearColor
+    question_answer_label.font = UIFont.systemFontOfSize(12)
     set_label_dynamicity question_answer_label, question_answer_text, Tags::ResponseQuestionAnswerLabel
     question_answer_label
   end
 
-  def get_newest_answer_first args
-    answers = args[:survey_response].answers.to_a
+  def get_newest_answer_first
+    answers = self.response.answers.to_a
     answers.sort_by{|answer| answer.created_at}.first
   end
 end

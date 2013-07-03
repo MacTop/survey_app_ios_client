@@ -41,5 +41,4 @@ describe "ResponseListScreen" do
     table = @response_list_screen.instance_variable_get('@table')
     table.visibleCells.first.contentView.viewWithTag(Tags::EmptyResponseMessageLabel).text.should == I18n.t('response.empty_message')
   end
-  
 end

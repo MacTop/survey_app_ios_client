@@ -72,7 +72,6 @@ module Helpers
 
   def apply_border_radius view, radius
     view.layer.cornerRadius = radius
-    view.layer.masksToBounds = true
   end
 
   def change_highlight(view, highlight_color)
@@ -86,4 +85,22 @@ module Helpers
     color = {:red => 0.127, :green => 0.459, :blue => 0.557, :alpha => 0.6}
     button.setBackgroundImage(get_image_from_color(color), forState: UIControlStateHighlighted)
   end
-end
+  
+  def apply_box_shadow_to(view, color, opacity, radius, offset, rasterize)
+    view.layer.shouldRasterize = rasterize
+    view.layer.masksToBounds = false
+    view.layer.shadowColor = getColor(color).CGColor
+    view.layer.shadowOpacity = opacity
+    view.layer.shadowRadius = radius
+    view.layer.shadowOffset = offset
+    view.layer.rasterizationScale = UIScreen.mainScreen.scale
+  end
+
+  def apply_corner_right_radii_to(view, radius)
+    mask_path = UIBezierPath.bezierPathWithRoundedRect(view.bounds, byRoundingCorners: (UIRectCornerTopRight | UIRectCornerBottomRight), cornerRadii: CGSizeMake(radius, radius))
+    mask_layer = CAShapeLayer.alloc.init
+    mask_layer.frame = view.bounds
+    mask_layer.path = mask_path.CGPath
+    view.layer.mask = mask_layer
+  end
+end 

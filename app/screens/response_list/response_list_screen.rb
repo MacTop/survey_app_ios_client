@@ -22,6 +22,18 @@ class ResponseListScreen < PM::Screen
   def will_appear
     load_survey_response_data
     self.navigationController.setNavigationBarHidden(true, animated: false)
+    @data.each do |data|
+      open_response_view_screen_on_tap data
+    end
+  end
+
+  def open_response_view_screen_on_tap data
+    data.on_tap do
+      change_highlight data, {:red => 0.933, :green => 0.933, :blue => 0.933, :alpha => 1}
+      response_controller = ResponseView.new
+      response_controller.survey_response = data.response
+      open response_controller
+    end
   end
 
   def will_disappear
