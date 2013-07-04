@@ -14,7 +14,6 @@ Teacup::Stylesheet.new :main do
     backgroundColor: @survey_item_background_color,
     textColor: @survey_item_text_color
 
-  
   style :survey_item_heading, extends: :survey_item,
     font: @heading_text_font
 
@@ -32,6 +31,11 @@ Teacup::Stylesheet.new :main do
   style :back_button,
     backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 0),
     frame: [[5, 7],[60, 35]],
+    font: UIFont.systemFontOfSize(14)
+
+  style :done_button,
+    backgroundColor: UIColor.colorWithRed(0.007, green: 0.339, blue: 0.437, alpha: 0),
+    frame: [[265, 7],[48, 35]],
     font: UIFont.systemFontOfSize(14)
 
   style :radio_buttons_table

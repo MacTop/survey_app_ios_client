@@ -21,6 +21,25 @@ class HeaderView < UIView
     add_back_button_if_needed
   end
 
+  def add_done_button view
+    done_button = UIButton.buttonWithType(UIButtonTypeCustom)
+    color = {:red => 0.007, :green => 0.339, :blue => 0.437, :alpha => 1}
+    done_button.setBackgroundImage(UIImage.imageNamed("done-button.png"), forState: UIControlStateNormal)
+    done_button.setTitle("Done", forState: UIControlStateNormal)
+    subview(done_button,:done_button)
+    done_button.on_tap { done_button_handler view, done_button }
+    apply_border_radius(done_button, 5)
+    done_button.layer.masksToBounds = true
+  end
+
+  def done_button_handler view, done_button
+    done_button.removeFromSuperview
+    view.text_area.resignFirstResponder
+    new_frame = view.superview.frame
+    new_frame.origin.y += view.y_offset
+    UIView.animateWithDuration(0.2, animations: lambda{view.superview.frame = new_frame})
+  end
+  
   def add_logo
     image = UIImage.imageNamed('logo.png')
     imageView = UIImageView.alloc.initWithImage(image)
@@ -53,6 +72,7 @@ class HeaderView < UIView
       # apply_click_highlight(back_button)
       back_button.setBackgroundImage(UIImage.imageNamed("backbutton-normal.png"), forState: UIControlStateNormal)
       back_button.setBackgroundImage(UIImage.imageNamed("backbutton-highlighted.png"), forState: UIControlStateHighlighted)
+      back_button.setTitle(" Back", forState: UIControlStateNormal)
       subview(back_button,:back_button)
       self.addSubview(back_button)
       back_button.on_tap { back_to_previous_screen }

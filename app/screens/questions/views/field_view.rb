@@ -73,6 +73,13 @@ class FieldView < UIView
     self.addSubview(text_field)
   end
 
+  def handle_MultilineQuestion
+    origin = get_origin_y self
+    header_view = QuestionScreen.this_controller.header_view
+    text_area = MultiLineField.new({:origin_y => origin + ControlVariables::QuestionMargin, :max_width => MAX_WIDTH, :header_view => header_view})
+    self.addSubview(text_area)
+  end
+
   def get_radio_options
     questions = Question.find(:id => self.question_id).first.radio_options.to_a
     questions.collect{|option| option.content}

@@ -42,6 +42,7 @@ class QuestionScreen < PM::Screen
   end
   
   def will_appear
+    self.view.bringSubviewToFront(self.header_view)
     self.navigationController.setNavigationBarHidden(true, animated: false)
   end
 

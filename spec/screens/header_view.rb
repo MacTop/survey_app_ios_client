@@ -31,5 +31,13 @@ describe "Header View" do
     navigation_controller.should.receive(:popViewControllerAnimated)
     @header_view.back_to_previous_screen
   end
+
+  it "add a button with text done to its view" do
+    view = UIView.alloc.initWithFrame([[200,0],[44,44]])
+    @header_view.add_done_button view
+    buttons = @header_view.subviews.select{|view| view.class == UIButton}
+    buttons.count.should == 2
+    buttons.last.titleForState(UIControlStateNormal).should == "Done"
+  end
   
 end
