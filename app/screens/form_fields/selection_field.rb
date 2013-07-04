@@ -1,9 +1,11 @@
-class SelectionField < PM::Screen
-  attr_accessor :data, :frame
+class SelectionField < UIView
+  attr_accessor :data
   include Helpers
   
-  def viewDidLoad
-    @table = UITableView.alloc.initWithFrame CGRectMake(0,0, frame.size.width, frame.size.height)
+  def initialize(args = {})
+    self.data = args[:data]
+    self.initWithFrame(CGRectMake(0,0, args[:frame].size.width, args[:frame].size.height))
+    @table = UITableView.alloc.initWithFrame CGRectMake(0,0, args[:frame].size.width, args[:frame].size.height)
     @table.backgroundColor = ControlVariables::ScreenColor
     @table.setSeparatorStyle(UITableViewCellSeparatorStyleNone)
     subview(@table, :radio_buttons_table)
@@ -32,10 +34,6 @@ class SelectionField < PM::Screen
     cell.setSelectionStyle(UITableViewCellSelectionStyleNone)
     cell    
   end
-
-  def tableView(tableView, heightForRowAtIndexPath: indexPath)
-    @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding
-  end
   
   def tableView(tableView, numberOfRowsInSection: section)
     self.data.count
@@ -47,5 +45,6 @@ class SelectionField < PM::Screen
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
+
   end
 end

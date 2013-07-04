@@ -65,7 +65,7 @@ class FieldView < UIView
   def handle_SingleLineQuestion
     origin = get_origin_y self
     text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, 30))
-    text_field.delegate = QuestionScreen.this_controller
+    text_field.delegate = self.controller
     text_field.backgroundColor = UIColor.whiteColor
     text_field.setTag Tags::FieldViewTextField
     text_field.contentVerticalAlignment = 0
@@ -77,11 +77,16 @@ class FieldView < UIView
     origin = get_origin_y self
     header_view = QuestionScreen.this_controller.header_view
     text_area = MultiLineField.new({:origin_y => origin + ControlVariables::QuestionMargin, :max_width => MAX_WIDTH, :header_view => header_view})
+    text_area.setTag Tags::MultilineQuestionView
     self.addSubview(text_area)
   end
 
+  def get_radio_option_models
+    Question.find(:id => self.question_id).first.radio_options.to_a
+  end
+  
   def get_radio_options
-    questions = Question.find(:id => self.question_id).first.radio_options.to_a
+    questions = get_radio_option_models
     questions.collect{|option| option.content}
   end
 
@@ -102,11 +107,10 @@ class FieldView < UIView
 
   def handle_multiple_choice controller
     labels, frame = get_label_and_frame
-    @view_controller = controller.new(data: labels, frame: frame)
-    @view_controller.view.frame = frame
-    QuestionScreen.this_controller.addChildViewController(@view_controller)
-    @view_controller.view.setTag(Tags.const_get("#{controller.to_s}ControllerView"))
-    self.addSubview(@view_controller.view)
+    @view_controller = controller.new({data: labels, frame: frame, :radio_options => get_radio_option_models})
+    @view_controller.frame = frame
+    @view_controller.setTag(Tags.const_get("#{controller.to_s}ControllerView"))
+    self.addSubview(@view_controller)
   end
 
   def get_table_height height

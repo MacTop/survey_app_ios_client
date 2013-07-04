@@ -16,7 +16,8 @@
     SwipeView                        = 750
     CheckBoxesControllerView         = 800
     CheckedImageView                 = 850
-    ResponseLabels                   = 950
+    ResponseLabels                   = 900
+    MultilineQuestionView            = 950
   end
   
   class ControlVariables
@@ -36,4 +37,5 @@
     RadioButtonsMaxCount             = 5
     RadioCellPadding                 = 25
     MaximumRadioButtonTableHeight    = 240
+    TableHeightMargin                = 50
   end

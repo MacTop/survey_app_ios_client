@@ -30,9 +30,6 @@ describe "FieldView" do
       @field_view.viewWithTag(Tags::FieldViewTextField).should.not.be.nil
     end
 
-    it "should have delegate container controller" do
-      @field_view.viewWithTag(Tags::FieldViewTextField).delegate.class.should == QuestionScreen
-    end
   end
 
   describe "radio" do
@@ -43,7 +40,7 @@ describe "FieldView" do
     end
 
     it "should have radiobuttons if the type is RadioQuestion" do
-      radio_button_views = @field_view.subviews.select{|subview| subview if subview.controller.class == RadioButtons}
+      radio_button_views = @field_view.subviews.select{|subview| subview.class == RadioButtons}
       radio_button_views.size.should == 1
     end
 
@@ -76,7 +73,7 @@ describe "FieldView" do
     end
 
     it "should have check boxes if the type is MultiChoiceQuestion" do
-      check_box_views = @field_view.subviews.select{|subview| subview if subview.controller.class == CheckBoxes}
+      check_box_views = @field_view.subviews.select{|subview| subview if subview.class == CheckBoxes}
       check_box_views.size.should == 1
     end
 

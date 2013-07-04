@@ -26,6 +26,12 @@ describe "QuestionScreen" do
   end
 =end
 
+  it "should fetch only the questions with the parent is null" do
+    Question.should_receive(:find).with({:survey_id => 5, :parent_id => 0}).and_return([])
+    @questions_screen.populate_questions
+    1.should == 1
+  end
+
   it "should include header view" do
     sub_views = @questions_screen.view.subviews.collect{|sub_view| sub_view.class.to_s}
     sub_views.should.include "HeaderView"
@@ -100,8 +106,9 @@ describe "QuestionScreen" do
     end
     
     it "should save the response" do
-      # questions = @questions_screen.instance_variable_get(:@questions)
-      radio_buttons = @questions_screen.childViewControllers.select{|controller| controller if controller.class == RadioButtons}
+      questions = @questions_screen.instance_variable_get(:@questions)
+      radio_buttons = questions.collect {|subview| subview.viewWithTag(Tags::RadioButtonsControllerView) if subview.class == FieldView}
+      radio_buttons.compact!
       radio_buttons.each do |radio_button|
         radio_button.radio_button_selection = "content"
       end
@@ -134,9 +141,35 @@ describe "QuestionScreen" do
 
     it "should join the selction for saving the answer" do
       field_view = @questions_screen.instance_variable_get(:@questions).first
-      controller = field_view.viewWithTag(Tags::CheckBoxesControllerView).controller
+      controller = field_view.viewWithTag(Tags::CheckBoxesControllerView)
       controller.stub!(:check_box_selection).and_return(["asd", "wer"])
       @questions_screen.get_answer_for_type_MultiChoiceQuestion(field_view).should == "asd, wer"
+    end
+  end
+  
+  describe "text area" do
+    before do
+      @questions_screen = QuestionScreen.new
+      @questions_screen.survey_id = 12
+      @questions_screen.on_load
+    end
+
+    it "should save the response" do
+      questions = @questions_screen.instance_variable_get(:@questions)
+      multiline_fields = questions.collect {|subview| subview.viewWithTag(Tags::MultilineQuestionView) if subview.class == FieldView}
+      multiline_fields.compact!
+
+      multiline_fields.each do |field|
+        question = Question.find(:id => field.superview.question_id).first
+        question.mandatory = true
+        question.save
+        field.text_area.text = "answer to multiline"
+      end
+      previous_response_count = SurveyResponse.all.count
+      previous_answers_count = Answer.all.count
+      @questions_screen.save_response
+      SurveyResponse.all.count.should > previous_response_count
+      Answer.all.count.should > previous_answers_count
     end
   end
 end

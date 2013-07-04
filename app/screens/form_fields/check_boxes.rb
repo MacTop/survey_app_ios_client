@@ -1,8 +1,8 @@
 class CheckBoxes < SelectionField
   attr_accessor :check_box_selection
 
-  def viewDidLoad
-    super
+  def initialize(args = {})
+    super args
     self.check_box_selection = []
   end
   
@@ -32,6 +32,10 @@ class CheckBoxes < SelectionField
     image_view = get_check_box_image_view_for(image_name)
     image_view.alpha = alpha
     image_view
+  end
+
+  def tableView(tableView, heightForRowAtIndexPath: indexPath)
+    @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)

@@ -9,7 +9,6 @@ describe "Check Boxes" do
     end
     new_frame = CGRectMake(0,ControlVariables::QuestionMargin, 300 ,200)
     @check_boxes = CheckBoxes.new(data: @check_box_labels, frame: new_frame)
-    @check_boxes.viewDidLoad
   end
   
   it "should have image view and label view in the table cell" do

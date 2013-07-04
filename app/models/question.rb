@@ -1,6 +1,7 @@
 class Question < NanoStore::Model
   attribute :id
   attribute :survey_id
+  attribute :parent_id
   attribute :content
   attribute :type
   attribute :mandatory

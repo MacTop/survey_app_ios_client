@@ -32,7 +32,7 @@ class QuestionScreen < PM::Screen
   end
 
   def populate_questions
-    Question.find(:survey_id => self.survey_id).each_with_index do |question, index|
+    Question.find(:survey_id => self.survey_id, :parent_id => 0).each_with_index do |question, index|
       question.content = "#{index+1}. #{question.content}"
       question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
@@ -192,13 +192,17 @@ class QuestionScreen < PM::Screen
 
   def get_answer_for_type_RadioQuestion(field_view)
     radio_question_view = field_view.viewWithTag(Tags::RadioButtonsControllerView)
-    radio_question_view.controller.radio_button_selection
+    radio_question_view.radio_button_selection
   end
   
   def get_answer_for_type_MultiChoiceQuestion(field_view)
     check_box_view = field_view.viewWithTag(Tags::CheckBoxesControllerView)
-    answers = check_box_view.controller.check_box_selection
+    answers = check_box_view.check_box_selection
     answers.join(", ")
+  end
+  
+  def get_answer_for_type_MultilineQuestion(field_view)
+    field_view.viewWithTag(Tags::MultilineQuestionView).text_area.text
   end
   
   def show_first_error_view
