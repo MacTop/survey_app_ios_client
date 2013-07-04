@@ -26,8 +26,11 @@ class HeaderView < UIView
     color = {:red => 0.007, :green => 0.339, :blue => 0.437, :alpha => 1}
     done_button.setBackgroundImage(UIImage.imageNamed("done-button.png"), forState: UIControlStateNormal)
     done_button.setTitle("Done", forState: UIControlStateNormal)
+    done_button.setTag Tags::HeaderViewDoneButton
     subview(done_button,:done_button)
-    done_button.on_tap { done_button_handler view, done_button }
+    done_button.on(UIControlEventTouchUpInside) do
+       done_button_handler view, done_button 
+    end
     apply_border_radius(done_button, 5)
     done_button.layer.masksToBounds = true
   end
@@ -35,6 +38,7 @@ class HeaderView < UIView
   def done_button_handler view, done_button
     done_button.removeFromSuperview
     view.text_area.resignFirstResponder
+
     new_frame = view.superview.frame
     new_frame.origin.y += view.y_offset
     UIView.animateWithDuration(0.2, animations: lambda{view.superview.frame = new_frame})

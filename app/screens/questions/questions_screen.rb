@@ -94,12 +94,16 @@ class QuestionScreen < PM::Screen
       first_view = self.view.viewWithTag(Tags::FieldView)
       frame = first_view.frame
       frame.origin.x = -1*offset
-      self.view.viewWithTag(Tags::FieldView).frame = frame   
+      self.view.viewWithTag(Tags::FieldView).frame = frame
+      self.view.bringSubviewToFront(self.header_view)
     end
   end
 
   def get_completion
-    lambda{|finished| self.view.viewWithTag(Tags::FieldView).removeFromSuperview}
+    Proc.new do |finished|
+      self.view.viewWithTag(Tags::FieldView).removeFromSuperview
+      remove_done_button_from_header_view_if_present
+    end
   end
 
   def second_animation
@@ -108,9 +112,15 @@ class QuestionScreen < PM::Screen
       frame = last_view.frame
       frame.origin.x = 10
       self.view.subviews.last.frame = frame
+      self.view.bringSubviewToFront(self.header_view)
     end
   end
 
+  def remove_done_button_from_header_view_if_present
+    done_button = self.header_view.viewWithTag(Tags::HeaderViewDoneButton)
+    done_button.sendActionsForControlEvents(UIControlEventTouchUpInside) if done_button
+  end
+  
   def swipe_left_handler
     if @current_page < @questions.count-1
       @current_page += 1

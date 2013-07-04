@@ -5,7 +5,8 @@ class FieldView < UIView
   MAX_WIDTH = 300
   
   def initialize(args = {})
-    self.initWithFrame CGRectMake(10, args[:origin_y] + ControlVariables::QuestionMargin, MAX_WIDTH, 300)
+    @frame_width = args[:width] || MAX_WIDTH
+    self.initWithFrame CGRectMake(10, args[:origin_y] + ControlVariables::QuestionMargin, @frame_width, 300)
     self.backgroundColor = UIColor.clearColor
     set_question_statement(args)
     set_error_field
@@ -64,7 +65,7 @@ class FieldView < UIView
   
   def handle_SingleLineQuestion
     origin = get_origin_y self
-    text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, MAX_WIDTH, 30))
+    text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, @frame_width, 30))
     text_field.delegate = self.controller
     text_field.backgroundColor = UIColor.whiteColor
     text_field.setTag Tags::FieldViewTextField

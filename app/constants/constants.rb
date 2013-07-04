@@ -18,6 +18,7 @@
     CheckedImageView                 = 850
     ResponseLabels                   = 900
     MultilineQuestionView            = 950
+    HeaderViewDoneButton             = 1000
   end
   
   class ControlVariables

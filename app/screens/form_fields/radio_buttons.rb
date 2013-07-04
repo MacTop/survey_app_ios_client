@@ -12,7 +12,7 @@ class RadioButtons < SelectionField
 
   def generate_expanded_data
     @radio_options.each do |radio_option|
-      @expanded_data << FieldView.new({:question => radio_option.questions.to_a.first, :origin_y => 20 }) unless radio_option.questions.to_a.empty?
+      @expanded_data << FieldView.new({:question => radio_option.questions.to_a.first, :origin_y => 20, :width => 280 }) unless radio_option.questions.to_a.empty?
     end
   end
   
