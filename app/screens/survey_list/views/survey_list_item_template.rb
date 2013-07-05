@@ -16,31 +16,44 @@ class SurveyListItemTemplate < UIView
   def initialize(args = {})
     self.initWithFrame CGRectMake(MARGIN,  ControlVariables::QuestionMargin, MAX_WIDTH, 100)
     self.backgroundColor = UIColor.whiteColor
+    self.survey_id = args[:survey].id
     set_survey_name args[:survey].name
     set_survey_description args[:survey].description
     set_survey_expiry_date args[:survey].expiry_date
-    self.survey_id = args[:survey].id
+    set_survey_response_count
     add_response_navigation_view
   end
 
   def set_survey_name text
-    survey_item_field text, 0, Tags::SurveyNameLabel, :survey_item_heading
+    origin = CGPointMake(MARGIN, 0)
+    survey_item_field text, origin, Tags::SurveyNameLabel, :survey_item_heading
   end
   
   def set_survey_description text
-    survey_item_field text, 20, Tags::SurveyDescriptionLabel, :survey_item_description
+    origin = CGPointMake(MARGIN, 20)
+    survey_item_field text, origin, Tags::SurveyDescriptionLabel, :survey_item_description
   end
   
   def set_survey_expiry_date text
     text = I18n.t('survey_list_screen.expiry_date', :date => text)
-    survey_item_field text, 55, Tags::SurveyExpiryDateLabel, :survey_item_expiry_date
+    origin = CGPointMake(MARGIN, 55)
+    survey_item_field text, origin, Tags::SurveyExpiryDateLabel, :survey_item_expiry_date
   end
-
-  def survey_item_field text, height, tag, style
-    field_label = UILabel.alloc.initWithFrame(CGRectMake(MARGIN, height, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
+  
+  def set_survey_response_count
+    origin = CGPointMake(225, 55)
+    survey_item_field get_survey_responses_count, origin, Tags::SurveyResponseCountLabel, :survey_response_count
+  end
+  
+  def survey_item_field text, origin, tag, style
+    field_label = UILabel.alloc.initWithFrame(CGRectMake(origin.x, origin.y, frame.size.width-RESPONSE_NAVIGATION_WIDTH, ControlVariables::LabelHeight))
     field_label.text = text
     field_label.setTag tag
     subview(field_label, style)
+  end
+  
+  def get_survey_responses_count
+    Survey.find(:id => self.survey_id).first.survey_responses.to_a.count.to_s
   end
   
   def add_response_navigation_view

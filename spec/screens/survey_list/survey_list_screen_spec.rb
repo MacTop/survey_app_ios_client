@@ -17,7 +17,7 @@ describe "Survey List Screen" do
 
   it "should have SurveyListItem in the table cell" do
     table = @survey_list_screen.instance_variable_get('@table')
-    table.reloadData
+    @survey_list_screen.load_surveys
     cell_subviews = table.visibleCells.first.contentView.subviews.collect{|sub_view| sub_view.class}
     cell_subviews.should.include SurveyListItemView
   end

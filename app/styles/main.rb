@@ -22,6 +22,9 @@ Teacup::Stylesheet.new :main do
 
   style :survey_item_expiry_date, extends: :survey_item,
     font: @expiry_date_text_font
+
+  style :survey_response_count, extends: :survey_item,
+    font: @expiry_date_text_font
   
   style :response_navigation_label,
     backgroundColor: @header_background_color,

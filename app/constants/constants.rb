@@ -19,6 +19,7 @@
     ResponseLabels                   = 900
     MultilineQuestionView            = 950
     HeaderViewDoneButton             = 1000
+    SurveyResponseCountLabel         = 1050
   end
   
   class ControlVariables
