@@ -1,5 +1,7 @@
 class ResponseListScreen < PM::Screen
   attr_accessor :survey_id
+  attr_accessor :received_survey_data
+  
   title "Response List"
   include Helpers
 
@@ -7,6 +9,7 @@ class ResponseListScreen < PM::Screen
 
   def on_load
     set_attributes self.view, stylename: :base_theme
+    @is_list_empty = false
     add header_view = HeaderView.new({:title => I18n.t('response_list_screen.title')})
     @survey_view = SurveyListItemTemplate.new({:survey => Survey.find(:id => self.survey_id).first})
     @survey_view.frame = get_new_frame @survey_view
@@ -17,15 +20,20 @@ class ResponseListScreen < PM::Screen
     subview(@table, :response_table)
     @table.dataSource = self
     @table.delegate = self
-  end
-
-  def will_appear
-    update_response_count
     load_survey_response_data
-    self.navigationController.setNavigationBarHidden(true, animated: false)
     @data.each do |data|
       open_response_view_screen_on_tap data
     end
+  end
+
+  def will_appear
+    self.navigationController.setNavigationBarHidden(true, animated: false)
+  end
+  
+  def viewDidAppear(animated)
+    update_response_count
+    update_response_data
+    @table.reloadData
   end
 
   def update_response_count
@@ -33,6 +41,17 @@ class ResponseListScreen < PM::Screen
     @survey_view.viewWithTag(Tags::SurveyResponseCountLabel).text = response_count
   end
 
+  def update_response_data
+   if self.received_survey_data
+     @data = [] if @is_list_empty
+     response_list_item = ResponseListItemTemplate.new({:survey_response => self.received_survey_data}) 
+     @data.unshift(response_list_item)
+     @is_list_empty = false
+     open_response_view_screen_on_tap response_list_item
+#     self.received_survey_data = nil
+   end
+  end
+  
   def open_response_view_screen_on_tap data
     data.on_tap do
       change_highlight data, {:red => 0.933, :green => 0.933, :blue => 0.933, :alpha => 1}
@@ -42,15 +61,11 @@ class ResponseListScreen < PM::Screen
     end
   end
 
-  def will_disappear
-     self.navigationController.setNavigationBarHidden(false, animated: true)
-  end
-
   def add_complete_response_title
-    field_label = UILabel.alloc.initWithFrame(CGRectMake(10, 0, 300, 30))
+    field_label = UILabel.alloc.initWithFrame(CGRectMake(10, 0, 300, 40))
     field_label.text = I18n.t('response.completed_responses')
     field_label.textColor = UIColor.colorWithRed(0.027, green: 0.459, blue: 0.557, alpha: 1)
-    field_label.backgroundColor =  UIColor.clearColor
+    field_label.backgroundColor = ControlVariables::ScreenColor
     field_label.textAlignment = NSTextAlignmentCenter
     field_label
   end
@@ -62,6 +77,14 @@ class ResponseListScreen < PM::Screen
     empty_message_label.backgroundColor =  UIColor.clearColor
     empty_message_label.textAlignment = NSTextAlignmentCenter
     empty_message_label
+  end
+
+  def tableView(tableView, heightForHeaderInSection: section)
+    ControlVariables::TableHeaderHeight
+  end
+  
+  def tableView(tableView, viewForHeaderInSection: section)
+    add_complete_response_title
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -88,16 +111,18 @@ class ResponseListScreen < PM::Screen
   end
 
   def show_questions_screen_for survey_id
-    open QuestionScreen.new(survey_id: survey_id) 
+    open QuestionScreen.new(survey_id: survey_id)
   end
 
   def load_survey_response_data
     @data = []
     responses = SurveyResponse.find({:survey_id => self.survey_id}, {:sort => {:created_at => :desc}})
     if responses.blank?
+      @is_list_empty = true
       @data << create_empty_message_label
     else
-      @data << add_complete_response_title
+      # @data << add_complete_response_title
+      @is_list_empty = false
       responses.each do |response|
         @data <<  ResponseListItemTemplate.new({:survey_response => response})
       end

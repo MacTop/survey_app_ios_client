@@ -71,6 +71,8 @@ module Helpers
   end
 
   def apply_border_radius view, radius
+    view.layer.shouldRasterize = true
+    view.layer.rasterizationScale = UIScreen.mainScreen.scale
     view.layer.cornerRadius = radius
   end
 
@@ -102,5 +104,7 @@ module Helpers
     mask_layer.frame = view.bounds
     mask_layer.path = mask_path.CGPath
     view.layer.mask = mask_layer
+    view.layer.shouldRasterize = true
+    view.layer.rasterizationScale = UIScreen.mainScreen.scale
   end
 end 

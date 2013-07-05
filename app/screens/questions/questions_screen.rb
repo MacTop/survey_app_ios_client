@@ -2,6 +2,8 @@ class QuestionScreen < PM::Screen
   attr_accessor :survey_id
   attr_accessor :first_field_view_with_error
   attr_accessor :header_view
+  attr_accessor :received_survey_data
+
   include Helpers
   stylesheet :main
 
@@ -174,7 +176,7 @@ class QuestionScreen < PM::Screen
       survey_response.save
       survey.survey_responses << survey_response
       survey.save
-      self.header_view.back_to_previous_screen
+      self.header_view.back_to_previous_screen survey_response
       UIAlertView.alert(I18n.t('response.success'))
     else
       show_first_error_view

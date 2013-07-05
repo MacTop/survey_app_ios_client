@@ -1,4 +1,6 @@
 class SurveyListScreen < PM::Screen
+  attr_accessor :received_survey_data
+
   title "SurveyList"
   include Helpers
 
@@ -14,19 +16,19 @@ class SurveyListScreen < PM::Screen
     self.view.addSubview @table
     @table.dataSource = self
     @table.delegate = self
+    load_surveys
   end
 
   def will_appear
-    load_surveys
     self.navigationController.setNavigationBarHidden(true, animated: false)
   end
 
+  def viewDidAppear(animated)
+    update_response_counts
+  end
+  
   def will_disappear
      self.navigationController.setNavigationBarHidden(false, animated: true)
-  end
-
-  def show_questions_screen
-    open QuestionScreen.new(survey_id: 2) 
   end
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
@@ -61,6 +63,12 @@ class SurveyListScreen < PM::Screen
     Survey.all.each do |survey|
       @data <<  SurveyListItemView.new({:survey => survey})
     end
-    @table.reloadData
+  end
+
+  def update_response_counts
+    @data.each do |survey_list_item|
+      response_count = survey_list_item.get_survey_responses_count
+      survey_list_item.viewWithTag(Tags::SurveyResponseCountLabel).text = response_count
+    end
   end
 end

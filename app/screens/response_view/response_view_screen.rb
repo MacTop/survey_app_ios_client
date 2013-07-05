@@ -1,5 +1,7 @@
 class ResponseView < PM::Screen
   attr_accessor :survey_response
+  attr_accessor :received_survey_data
+
   include Helpers
 
   def on_load

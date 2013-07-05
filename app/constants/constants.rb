@@ -40,4 +40,5 @@
     RadioCellPadding                 = 25
     MaximumRadioButtonTableHeight    = 240
     TableHeightMargin                = 50
+    TableHeaderHeight                = 35
   end

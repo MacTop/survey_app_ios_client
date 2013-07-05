@@ -12,7 +12,6 @@ class SurveyListItemTemplate < UIView
     end
   end
 
-
   def initialize(args = {})
     self.initWithFrame CGRectMake(MARGIN,  ControlVariables::QuestionMargin, MAX_WIDTH, 100)
     self.backgroundColor = UIColor.whiteColor

@@ -79,12 +79,13 @@ class HeaderView < UIView
       back_button.setTitle(" Back", forState: UIControlStateNormal)
       subview(back_button,:back_button)
       self.addSubview(back_button)
-      back_button.on_tap { back_to_previous_screen }
+      back_button.on_tap { back_to_previous_screen}
     end
   end
 
-  def back_to_previous_screen
+  def back_to_previous_screen received_data = nil
     navigation_controller = @app_delegate.get_navigation_controller
-    navigation_controller.popViewControllerAnimated(true) 
+    navigation_controller.popViewControllerAnimated(true)
+    navigation_controller.visibleViewController.received_survey_data = received_data
   end
 end
