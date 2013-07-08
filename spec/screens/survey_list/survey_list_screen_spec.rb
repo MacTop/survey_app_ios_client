@@ -17,7 +17,7 @@ describe "Survey List Screen" do
 
   it "should have SurveyListItem in the table cell" do
     table = @survey_list_screen.instance_variable_get('@table')
-    @survey_list_screen.load_surveys
+    table.reloadData
     cell_subviews = table.visibleCells.first.contentView.subviews.collect{|sub_view| sub_view.class}
     cell_subviews.should.include SurveyListItemView
   end
@@ -26,7 +26,7 @@ describe "Survey List Screen" do
     @survey_list_screen.should_receive(:open) do |arg|
       arg.class.should == QuestionScreen
     end
-    @survey_list_screen.show_questions_screen
+    @survey_list_screen.show_questions_screen_for @survey.id
   end
 
   it "should show response list view on tap of a listed survey" do

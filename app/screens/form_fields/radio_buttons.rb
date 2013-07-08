@@ -1,5 +1,5 @@
 class RadioButtons < SelectionField
-  attr_accessor :radio_button_selection, :radio_options
+  attr_accessor :radio_button_selection, :radio_options, :radio_sub_question
 
   def initialize(args = {})
     super args
@@ -12,7 +12,8 @@ class RadioButtons < SelectionField
 
   def generate_expanded_data
     @radio_options.each do |radio_option|
-      @expanded_data << FieldView.new({:question => radio_option.questions.to_a.first, :origin_y => 20, :width => 280 }) unless radio_option.questions.to_a.empty?
+      field_view = FieldView.new({:question => radio_option.questions.to_a.first, :origin_y => 20, :width => 280 }) unless radio_option.questions.to_a.empty?
+      @expanded_data << (radio_option.questions.to_a.empty? ? nil : field_view)
     end
   end
   
@@ -25,7 +26,6 @@ class RadioButtons < SelectionField
 
   def tableView(tableView, cellForRowAtIndexPath: indexPath)
     cell = super
-
     cell.contentView.subviews.removeViewsFromSuperview unless cell.contentView.subviews.empty?
     radio_image_view = get_radio_image_view_for("RadioButton-Unselected.png")
     cell.contentView.addSubview(radio_image_view)
@@ -34,7 +34,8 @@ class RadioButtons < SelectionField
       cell.contentView.addSubview(@radio_image_selected_view)
       self.radio_button_selection = @data[indexPath.row].text
       unless self.radio_options[indexPath.row].questions.to_a.empty?
-        cell.contentView.addSubview(@expanded_data[indexPath.row])
+        self.radio_sub_question = @expanded_data[indexPath.row]
+        cell.contentView.addSubview(@expanded_data[indexPath.row]) unless @expanded_data[indexPath.row].nil?
       end
     end
     cell     
@@ -49,14 +50,11 @@ class RadioButtons < SelectionField
   end
 
   def tableView(tableView, didSelectRowAtIndexPath: indexPath)
-    
     @selected_row = indexPath.row
     tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationFade)
     cell = @table.cellForRowAtIndexPath(indexPath)
     change_cell_highlight cell, @data[indexPath.row]
-    
     adjust_table_height
-    
     cell
   end
 
@@ -81,6 +79,5 @@ class RadioButtons < SelectionField
     new_frame = view.frame
     new_frame.size.height = @table.contentSize.height
     view.frame = new_frame
-    
   end
 end

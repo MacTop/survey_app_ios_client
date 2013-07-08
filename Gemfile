@@ -10,6 +10,7 @@ gem "motion-testflight", "~> 1.5"
 gem "nano-store", "~> 0.6.3"
 gem 'motion-i18n'
 gem 'i18n_tools', :require => 'i18n_tools/tasks'
+gem 'motion-redgreen'
 
 group :spec do
   gem "motion-facon"

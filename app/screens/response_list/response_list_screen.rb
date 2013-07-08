@@ -48,7 +48,6 @@ class ResponseListScreen < PM::Screen
      @data.unshift(response_list_item)
      @is_list_empty = false
      open_response_view_screen_on_tap response_list_item
-#     self.received_survey_data = nil
    end
   end
   
@@ -121,7 +120,6 @@ class ResponseListScreen < PM::Screen
       @is_list_empty = true
       @data << create_empty_message_label
     else
-      # @data << add_complete_response_title
       @is_list_empty = false
       responses.each do |response|
         @data <<  ResponseListItemTemplate.new({:survey_response => response})

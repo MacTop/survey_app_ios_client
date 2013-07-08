@@ -24,10 +24,10 @@ describe "Header View" do
 
   it "should show the previous screen on click of back button" do
     navigation_controller = mock("navigation controller" )
-    
     app_delegate = UIApplication.sharedApplication.delegate
     app_delegate.stub!(:get_navigation_controller).and_return(navigation_controller)
     navigation_controller.stub!(:popViewControllerAnimated)
+    navigation_controller.stub!(:visibleViewController).and_return(QuestionScreen.new)
     navigation_controller.should.receive(:popViewControllerAnimated)
     @header_view.back_to_previous_screen
   end

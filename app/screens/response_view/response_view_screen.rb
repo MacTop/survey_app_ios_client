@@ -3,7 +3,8 @@ class ResponseView < PM::Screen
   attr_accessor :received_survey_data
 
   include Helpers
-
+  include ResponseHelper
+  
   def on_load
     add header_view = HeaderView.new({:title => I18n.t('response_view_screen.title')})
     table_origin =  get_origin_y(self.view)
@@ -19,11 +20,11 @@ class ResponseView < PM::Screen
   def set_data_source
     @data = []
     answers = survey_response.answers.to_a
-    answers.each do |answer|
+    aggregate_question_answers(survey_response).flatten.each do |answer|
       @data << ResponseDetails.new(answer)
     end
   end
-  
+
   def will_appear
     self.navigationController.setNavigationBarHidden(true, animated: false)
   end

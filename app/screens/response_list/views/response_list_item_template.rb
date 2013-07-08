@@ -1,7 +1,8 @@
 class ResponseListItemTemplate < UIView
   attr_accessor :response
   include Helpers
-
+  include ResponseHelper
+  
   MAX_WIDTH = 300
   MARGIN = 10
   
@@ -32,7 +33,6 @@ class ResponseListItemTemplate < UIView
   end
 
   def get_newest_answer_first
-    answers = self.response.answers.to_a
-    answers.sort_by{|answer| answer.created_at}.first
+    aggregate_question_answers(self.response).first.first
   end
 end
