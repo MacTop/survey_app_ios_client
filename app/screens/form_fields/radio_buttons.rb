@@ -69,7 +69,7 @@ class RadioButtons < SelectionField
     adjust_height_to_table_content self
     adjust_height_to_table_content self.superview
     
-    self.superview.reset_field_frame
+    self.superview.reset_field_frame 50
     
     submit_button = self.superview.viewWithTag(Tags::SubmitButtonView)
     if submit_button
