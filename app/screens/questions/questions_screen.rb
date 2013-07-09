@@ -91,17 +91,18 @@ class QuestionScreen < PM::Screen
 
   def addQuestionView(offset)
     update_page_number
-    UIView.animateWithDuration(0.5 ,animations: self.first_animation(offset) , completion: self.get_completion)
+    UIView.animateWithDuration(0.5 ,animations: self.first_animation(offset), completion: self.get_completion)
     next_view = @questions[@current_page]
     next_view_frame = next_view.frame
     next_view_frame.origin.x = offset
     next_view.frame = next_view_frame
     self.view.addSubview(next_view)
-    UIView.animateWithDuration(0.5, animations: self.second_animation)
+    UIView.animateWithDuration(0.5, animations: self.second_animation, completion: self.get_second_completion)
   end
 
   def first_animation(offset)
     Proc.new do
+      self.view.userInteractionEnabled = false
       first_view = self.view.viewWithTag(Tags::FieldView)
       frame = first_view.frame
       frame.origin.x = -1*offset
@@ -114,6 +115,12 @@ class QuestionScreen < PM::Screen
     Proc.new do |finished|
       self.view.viewWithTag(Tags::FieldView).removeFromSuperview
       remove_done_button_from_header_view_if_present
+    end
+  end
+
+  def get_second_completion
+    Proc.new do |finished|
+      self.view.userInteractionEnabled = true
     end
   end
 
