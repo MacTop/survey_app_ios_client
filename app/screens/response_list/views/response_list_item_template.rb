@@ -33,6 +33,9 @@ class ResponseListItemTemplate < UIView
   end
 
   def get_newest_answer_first
-    aggregate_question_answers(self.response).first.first
+    answers = self.response.answers.to_a
+    answers = answers.select{|answer| Question.find(:id => answer.question_id).first.parent_id == 0}
+    answers.sort_by{|answer| answer.created_at}.first
+    # aggregate_question_answers(self.response).first.first
   end
 end

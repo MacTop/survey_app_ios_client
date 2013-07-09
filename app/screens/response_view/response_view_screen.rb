@@ -19,9 +19,12 @@ class ResponseView < PM::Screen
 
   def set_data_source
     @data = []
+    gcd_queue = Dispatch::Queue.concurrent(:high)
     answers = survey_response.answers.to_a
-    aggregate_question_answers(survey_response).flatten.each do |answer|
+    gcd_queue.sync do
+      aggregate_question_answers(survey_response).flatten.each do |answer|
       @data << ResponseDetails.new(answer)
+      end
     end
   end
 
