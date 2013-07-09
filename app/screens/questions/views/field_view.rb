@@ -119,16 +119,16 @@ class FieldView < UIView
   end
   
   def handle_RadioQuestion args={}
-    handle_multiple_choice RadioButtons
+    handle_multiple_choice RadioButtons, args
   end
 
   def handle_MultiChoiceQuestion args={}
-    handle_multiple_choice CheckBoxes
+    handle_multiple_choice CheckBoxes, args
   end
 
-  def handle_multiple_choice controller
+  def handle_multiple_choice controller, args
     labels, frame = get_label_and_frame
-    @view_controller = controller.new({data: labels, frame: frame, :radio_options => get_radio_option_models})
+    @view_controller = controller.new({data: labels, frame: frame, :radio_options => get_radio_option_models, :question_index => args[:question_index]})
     @view_controller.frame = frame
     @view_controller.setTag(Tags.const_get("#{controller.to_s}ControllerView"))
     self.addSubview(@view_controller)

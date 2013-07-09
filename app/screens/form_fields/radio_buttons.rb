@@ -5,17 +5,16 @@ class RadioButtons < SelectionField
     super args
     self.radio_options = args[:radio_options]
     @expanded_data = []
-    self.generate_expanded_data
+    self.generate_expanded_data args
     @radio_image_selected_view = get_radio_image_view_for("RadioButton-Selected.png")
     @selected_row = -1
   end
 
-  def generate_expanded_data
-    parent_question_index = Question.find(:id => @radio_options.first.question_id).first.index 
+  def generate_expanded_data args
     @radio_options.each_with_index do |radio_option, index|
       unless radio_option.questions.to_a.empty?
         question = radio_option.questions.to_a.first
-        question.content = "#{parent_question_index}.#{index+1} #{question.content}" 
+        question.content = "#{args[:question_index]}.#{index+1} #{question.content}" 
           field_view = FieldView.new({:question => question, :origin_x => 28, :origin_y => 25, :width => 271, :input_field_y_margin => 6})
       end
       @expanded_data << (radio_option.questions.to_a.empty? ? nil : field_view)
