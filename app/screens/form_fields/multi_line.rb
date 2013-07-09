@@ -8,8 +8,20 @@ class MultiLineField < UIView
     @text_area = UITextView.alloc.initWithFrame(self.bounds)
     @text_area.delegate = self
     @text_area.setFont(UIFont.systemFontOfSize(16))
-    @text_area.layer.cornerRadius = 5
+    @text_area.layer.cornerRadius = 15
+    add_inset_shadow_to_text_area
     subview(@text_area)
+  end
+
+  def add_inset_shadow_to_text_area
+    @text_area.backgroundColor = UIColor.clearColor
+    border_view = UIImageView.alloc.initWithFrame CGRectMake(0, -2 , @text_area.frame.size.width, @text_area.frame.size.height + 5)
+    border_view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth
+    text_field_image = UIImage.imageNamed("text-area-bg.png").resizableImageWithCapInsets(UIEdgeInsetsMake(20, 20, 20, 20))
+    border_view.image = text_field_image
+    border_view.frame.origin = @text_area.frame.origin
+    subview(border_view)
+    self.sendSubviewToBack(border_view)
   end
   
   def textViewDidBeginEditing(textView)
