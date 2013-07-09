@@ -39,9 +39,9 @@ class HeaderView < UIView
     done_button.removeFromSuperview
     view.text_area.resignFirstResponder
 
-    new_frame = view.superview.frame
+    new_frame = view.parent_view.frame
     new_frame.origin.y += view.y_offset
-    UIView.animateWithDuration(0.2, animations: lambda{view.superview.frame = new_frame})
+    UIView.animateWithDuration(0.2, animations: lambda{view.parent_view.frame = new_frame})
   end
   
   def add_logo
@@ -71,9 +71,6 @@ class HeaderView < UIView
     if(self.back_button_needed?)
       back_button = UIButton.buttonWithType(UIButtonTypeCustom)
       back_button.setTitle("", forState:UIControlStateNormal)
-      
-      # apply_border_radius(back_button, 5)
-      # apply_click_highlight(back_button)
       back_button.setBackgroundImage(UIImage.imageNamed("backbutton-normal.png"), forState: UIControlStateNormal)
       back_button.setBackgroundImage(UIImage.imageNamed("backbutton-highlighted.png"), forState: UIControlStateHighlighted)
       back_button.setTitle(" Back", forState: UIControlStateNormal)
@@ -87,5 +84,11 @@ class HeaderView < UIView
     navigation_controller = @app_delegate.get_navigation_controller
     navigation_controller.popViewControllerAnimated(true)
     navigation_controller.visibleViewController.received_survey_data = received_data
+  end
+
+  def back_to view_controller, received_data = nil
+    navigation_controller = @app_delegate.get_navigation_controller
+    view_controller.received_survey_data = received_data
+    navigation_controller.pushViewController(view_controller, animated: true)
   end
 end

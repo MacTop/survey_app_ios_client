@@ -4,6 +4,7 @@ class Question < NanoStore::Model
   attribute :parent_id
   attribute :content
   attribute :type
+  attribute :index
   attribute :mandatory
   bag :radio_options
   

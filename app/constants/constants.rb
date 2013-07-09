@@ -41,4 +41,13 @@
     MaximumRadioButtonTableHeight    = 240
     TableHeightMargin                = 50
     TableHeaderHeight                = 35
+    @@keyboard_height                = 216
+
+    def self.get_keyboard_height
+      @@keyboard_height
+    end
+    
+    def self.set_keyboard_height height
+      @@keyboard_height = height
+    end
   end

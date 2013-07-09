@@ -1,19 +1,38 @@
 class FieldView < UIView
-  attr_accessor :question_id
+  attr_accessor :question_id, :parent_view, :text_area, :y_offset
   include Helpers
   
   MAX_WIDTH = 300
   
   def initialize(args = {})
     @frame_width = args[:width] || MAX_WIDTH
-    self.initWithFrame CGRectMake(10, args[:origin_y] + ControlVariables::QuestionMargin, @frame_width, 300)
+    origin_x = args[:origin_x] || 10
+    self.initWithFrame CGRectMake(origin_x, args[:origin_y] + ControlVariables::QuestionMargin, @frame_width, 300)
     self.backgroundColor = UIColor.clearColor
     set_question_statement(args)
     set_error_field
     self.question_id = args[:question].id 
-    self.send("handle_#{args[:question].type}")
+    self.send("handle_#{args[:question].type}", args)
     self.reset_field_frame
     self.setTag Tags::FieldView
+  end
+
+  def textFieldDidBeginEditing(textField)
+    parent_controller = QuestionScreen.this_controller
+    self.text_area = textField
+    self.parent_view = parent_controller.view.viewWithTag(Tags::FieldView)
+    parent_controller.header_view.add_done_button self
+    new_frame = self.parent_view.frame
+    new_frame.origin.y -= calculate_displacement(ControlVariables.get_keyboard_height)
+    UIView.animateWithDuration(0.2, animations: lambda{self.parent_view.frame = new_frame})
+  end
+
+
+  def calculate_displacement(kb_height)
+    screen_height = UIScreen.mainScreen.bounds.size.height
+    @y_offset = 0
+    @y_offset = (kb_height - (screen_height - (self.convertPoint(self.text_area.frame.origin, toView: nil).y + ControlVariables::HeaderHeight)))
+    @y_offset = @y_offset > 0 ? @y_offset : 0
   end
 
   def set_question_statement(args)
@@ -63,10 +82,11 @@ class FieldView < UIView
     input_field.frame = new_frame
   end
   
-  def handle_SingleLineQuestion
+  def handle_SingleLineQuestion args={}
     origin = get_origin_y self
-    text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + ControlVariables::QuestionMargin, @frame_width, 30))
-    text_field.delegate = self.controller
+    margin = args[:input_field_y_margin] || ControlVariables::QuestionMargin
+    text_field = UITextField.alloc.initWithFrame(CGRectMake(0, origin + margin, @frame_width, 30))
+    text_field.delegate = self
     text_field.backgroundColor = UIColor.whiteColor
     text_field.setTag Tags::FieldViewTextField
     text_field.contentVerticalAlignment = 0
@@ -74,7 +94,7 @@ class FieldView < UIView
     self.addSubview(text_field)
   end
 
-  def handle_MultilineQuestion
+  def handle_MultilineQuestion args={}
     origin = get_origin_y self
     header_view = QuestionScreen.this_controller.header_view
     text_area = MultiLineField.new({:origin_y => origin + ControlVariables::QuestionMargin, :max_width => MAX_WIDTH, :header_view => header_view})
@@ -98,11 +118,11 @@ class FieldView < UIView
     [labels, new_frame]
   end
   
-  def handle_RadioQuestion
+  def handle_RadioQuestion args={}
     handle_multiple_choice RadioButtons
   end
 
-  def handle_MultiChoiceQuestion
+  def handle_MultiChoiceQuestion args={}
     handle_multiple_choice CheckBoxes
   end
 

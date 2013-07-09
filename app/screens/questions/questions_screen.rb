@@ -35,6 +35,8 @@ class QuestionScreen < PM::Screen
 
   def populate_questions
     Question.find(:survey_id => self.survey_id, :parent_id => 0).each_with_index do |question, index|
+      question.index = index+1
+      question.save
       question.content = "#{index+1}. #{question.content}"
       question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view) })
@@ -44,12 +46,21 @@ class QuestionScreen < PM::Screen
   end
   
   def will_appear
+    @key_board_observer = App.notification_center.observe UIKeyboardWillShowNotification do |notification|
+      get_keyboard_height notification
+    end
     self.view.bringSubviewToFront(self.header_view)
     self.navigationController.setNavigationBarHidden(true, animated: false)
   end
 
   def will_disappear
+    App.notification_center.unobserve @key_board_observer
     self.navigationController.setNavigationBarHidden(false, animated: true)
+  end
+
+  def get_keyboard_height notification
+    key_board_object = notification.userInfo.objectForKey("UIKeyboardFrameEndUserInfoKey")
+    ControlVariables.set_keyboard_height(key_board_object.CGRectValue.size.height)
   end
   
   def textFieldDidBeginEditing(textField)
@@ -176,8 +187,8 @@ class QuestionScreen < PM::Screen
       @survey_response.save
       survey.survey_responses << @survey_response
       survey.save
+      # open_reponse_list_screen
       self.header_view.back_to_previous_screen @survey_response
-      UIAlertView.alert(I18n.t('response.success'))
     else
       show_first_error_view
     end
@@ -235,6 +246,12 @@ class QuestionScreen < PM::Screen
     self.first_field_view_with_error = field_view if self.first_field_view_with_error.nil?
     error_label = field_view.viewWithTag(Tags::ErrorFieldViewLabel)
     field_view.set_error_message if error_label.text.blank?
+  end
+
+  def open_reponse_list_screen
+    response_view_controller = ResponseListScreen.new(survey_id: survey_id)
+    response_view_controller.received_survey_data = @survey_response
+    open response_view_controller
   end
   
   def self.this_controller

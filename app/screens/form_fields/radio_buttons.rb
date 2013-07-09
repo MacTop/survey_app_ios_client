@@ -11,8 +11,13 @@ class RadioButtons < SelectionField
   end
 
   def generate_expanded_data
-    @radio_options.each do |radio_option|
-      field_view = FieldView.new({:question => radio_option.questions.to_a.first, :origin_y => 20, :width => 280 }) unless radio_option.questions.to_a.empty?
+    parent_question_index = Question.find(:id => @radio_options.first.question_id).first.index 
+    @radio_options.each_with_index do |radio_option, index|
+      unless radio_option.questions.to_a.empty?
+        question = radio_option.questions.to_a.first
+        question.content = "#{parent_question_index}.#{index+1} #{question.content}" 
+          field_view = FieldView.new({:question => question, :origin_x => 28, :origin_y => 25, :width => 271, :input_field_y_margin => 6})
+      end
       @expanded_data << (radio_option.questions.to_a.empty? ? nil : field_view)
     end
   end
@@ -43,7 +48,7 @@ class RadioButtons < SelectionField
 
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
     if @selected_row == indexPath.row
-      @data[indexPath.row].frame.size.height + @expanded_data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding
+      @data[indexPath.row].frame.size.height + @expanded_data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding + 20
     else
       @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding
     end
