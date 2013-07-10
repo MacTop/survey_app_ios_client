@@ -39,7 +39,7 @@ class RadioButtons < SelectionField
       self.radio_button_selection = @data[indexPath.row].text
       unless self.radio_options[indexPath.row].questions.to_a.empty?
         self.radio_sub_question = @expanded_data[indexPath.row]
-        cell.contentView.addSubview(@expanded_data[indexPath.row]) unless @expanded_data[indexPath.row].nil?
+        cell.contentView.addSubview(@expanded_data[indexPath.row]) unless @expanded_data[indexPath.row].blank?
       end
     end
     cell     
@@ -47,9 +47,13 @@ class RadioButtons < SelectionField
 
   def tableView(tableView, heightForRowAtIndexPath: indexPath)
     if @selected_row == indexPath.row
-      @data[indexPath.row].frame.size.height + @expanded_data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding + 20
+      unless @expanded_data[indexPath.row].blank?
+        @data[indexPath.row].frame.size.height + @expanded_data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding + 20
+      else
+        @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding - 7
+      end
     else
-      @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding
+      @data[indexPath.row].frame.size.height + ControlVariables::RadioCellPadding - 7
     end
   end
 
@@ -58,7 +62,7 @@ class RadioButtons < SelectionField
     tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationFade)
     cell = @table.cellForRowAtIndexPath(indexPath)
     change_cell_highlight cell, @data[indexPath.row]
-    adjust_table_height
+    adjust_table_height unless @expanded_data[indexPath.row].blank?
     cell
   end
 

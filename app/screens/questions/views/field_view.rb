@@ -45,7 +45,7 @@ class FieldView < UIView
   
   def set_error_field
     origin = get_origin_y self
-    error_label = UILabel.alloc.initWithFrame(CGRectMake(0, origin, frame.size.width, 0))
+    error_label = UILabel.alloc.initWithFrame(CGRectMake(0, origin - 7, frame.size.width, 0))
     error_label.text = ""
     error_label.setTag Tags::ErrorFieldViewLabel
     error_label.backgroundColor = UIColor.clearColor

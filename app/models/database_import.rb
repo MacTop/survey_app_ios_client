@@ -34,7 +34,7 @@ class DataStore
   def self.import_questions    
     get_data_for(@question_data).each do |question|
       survey = Survey.find(:id => question[:survey_id]).first
-      survey.questions << Question.new(:id => question[:id], :survey_id => question[:survey_id], :content => question[:content], :type => question[:type], :mandatory => question[:mandatory], :parent_id => 0)
+      survey.questions << Question.new(:id => question[:id], :survey_id => question[:survey_id], :content => question[:content], :type => question[:type], :mandatory => question[:mandatory], :parent_id => 0, :created_at => Time.now)
       survey.save
     end
   end
@@ -44,9 +44,9 @@ class DataStore
       question = Question.find(:id => option[:question_id]).first
       radio_option = RadioOption.new(:id => option[:id], :question_id => option[:question_id], :content => option[:content])
       option[:questions].each do |sub_question|
-        radio_option.questions << Question.new(:id => sub_question[:id], :survey_id => sub_question[:survey_id], :content => sub_question[:content], :type => sub_question[:type], :mandatory => sub_question[:mandatory], :parent_id => sub_question[:parent_id])
-        radio_option.save
+        radio_option.questions << Question.new(:id => sub_question[:id], :survey_id => sub_question[:survey_id], :content => sub_question[:content], :type => sub_question[:type], :mandatory => sub_question[:mandatory], :parent_id => sub_question[:parent_id], :created_at => Time.now)
       end
+      radio_option.save
       question.radio_options << radio_option
       question.save
     end

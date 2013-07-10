@@ -34,7 +34,7 @@ class QuestionScreen < PM::Screen
   end
 
   def populate_questions
-    Question.find(:survey_id => self.survey_id, :parent_id => 0).each_with_index do |question, index|
+    Question.find({:survey_id => self.survey_id, :parent_id => 0}, {:sort => {:created_at => :asc}}).each_with_index do |question, index|
       question.content = "#{index+1}. #{question.content}"
       question.content = "#{question.content} *" if question.mandatory
       field_view = FieldView.new({:question => question, :origin_y => get_origin_y(self.view), :question_index => index+1 })
@@ -162,7 +162,7 @@ class QuestionScreen < PM::Screen
     button_height = ControlVariables::SubmitButtonHeight
     view_size = @questions.last.frame.size
     origin  = view_size.height + ControlVariables::QuestionMargin
-    CGRectMake(view_size.width/2 - button_width/2 , origin, button_width, button_height)
+    CGRectMake(view_size.width/2 - button_width/2 , origin - 35, button_width, button_height)
   end
 
   def get_submit_button_view    
