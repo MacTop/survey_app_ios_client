@@ -103,7 +103,8 @@ class FieldView < UIView
   end
 
   def get_radio_option_models
-    Question.find(:id => self.question_id).first.radio_options.to_a
+    radio_option_models = Question.find(:id => self.question_id).first.radio_options.to_a
+    radio_option_models.sort_by{|option| option.created_at}
   end
   
   def get_radio_options

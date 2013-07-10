@@ -42,7 +42,7 @@ class DataStore
   def self.import_options
     get_data_for(@option_data).each do |option|
       question = Question.find(:id => option[:question_id]).first
-      radio_option = RadioOption.new(:id => option[:id], :question_id => option[:question_id], :content => option[:content])
+      radio_option = RadioOption.new(:id => option[:id], :question_id => option[:question_id], :content => option[:content], :created_at => Time.now)
       option[:questions].each do |sub_question|
         radio_option.questions << Question.new(:id => sub_question[:id], :survey_id => sub_question[:survey_id], :content => sub_question[:content], :type => sub_question[:type], :mandatory => sub_question[:mandatory], :parent_id => sub_question[:parent_id], :created_at => Time.now)
       end
