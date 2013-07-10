@@ -6,6 +6,7 @@ require 'motion-testflight'
 require 'sugarcube-gestures'
 require 'motion-cocoapods'
 require 'bundler'
+require 'bubble-wrap/reactor'
 
 if ARGV.join(' ') =~ /spec/
   Bundler.require :default, :spec

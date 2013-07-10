@@ -62,7 +62,7 @@ class HeaderView < UIView
 
   def back_button_needed?
     if @app_delegate.home_screen
-      return @app_delegate.home_screen.navigation_controller.viewControllers.length > 0
+      return @app_delegate.home_screen.navigation_controller.viewControllers.length > 1
     end
     return false
   end
